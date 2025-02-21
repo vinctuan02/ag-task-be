@@ -133,9 +133,17 @@ export class OrderService {
 		id: string,
 		updateOrderDto: Partial<UpdateOrderDto>,
 	): Promise<Order> {
+
+		const {topicId} = updateOrderDto
+
 		const order = await this.orderRepository.findOne({ where: { id } });
 		if (!order) {
 			throw new NotFoundException('Order not found');
+		}
+		if(topicId) {
+			const isTopicExistsById = await this.topicService.checkExistsById(topicId);
+			if(!isTopicExistsById)
+				throw new NotFoundException('Topic not found');
 		}
 
 		Object.assign(order, updateOrderDto);
