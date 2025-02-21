@@ -1,0 +1,273 @@
+{
+    "app": {
+        "title": "ANT Group",
+        "description": "Together we will succeed"
+    },
+    "accessDenied": {
+        "label": "Access denied",
+        "title": "Looks like you don't have permission to access this page",
+        "des": "Reach out to system administrator to gain access",
+        "loginByOtherAccount": "Sign in with another account"
+    },
+    "auth": {
+        "login": "Login",
+        "signUp": "Signup",
+        "forgotPassword": "Forgot password",
+        "dontHaveAccount": "Don't have account?",
+        "alreadyHaveAccount": "Already have account?",
+        "confirmEmail": "Confirm your email",
+        "confirmEmailDescription": "We sent a confirmation email to the email you registered with. Check your spam folder if you do not receive any email.",
+        "goToLogin": "Login",
+        "resendConfirmationEmail": "Resend confirmation email",
+        "linkHasExpired": "The link has expired",
+        "reEnterEmail": "Please re-enter your email",
+        "emailConfirmationSuccessful": "Email confirmation successful",
+        "yourAccountIsBeingApprovedByAdmin": "Your account is being approved by Admin",
+        "forbiddenTitle": "You do not have access",
+        "forbiddenDescription": "Please contact the Admin for more details"
+    },
+    "action": {
+        "name": "Name",
+        "delete": "Delete",
+        "update": "Update",
+        "create": "Create",
+        "view": "View",
+        "edit": "Edit"
+    },
+    "common": {
+        "type": "Type",
+        "status": "Status",
+        "deadline": "Deadline",
+        "userCreated": "User created",
+        "action": "Action",
+        "description": "Description",
+        "iNo": "No.",
+        "update": "Update",
+        "create": "Create",
+        "detail": "Detail",
+        "delete": "Delete",
+        "upload": "Upload",
+        "dateCreated": "Date created",
+        "dateUpdated": "Date updated",
+        "uploadSubTitle": "or drag and drop it here",
+        "uploadTitleMp3": "Select a MP3 file to upload",
+        "uploadTitleMp4": "Select a MP4 file to upload",
+        "uploadTitleImage": "Select a image file to upload",
+        "uploadTitleDocument": "Select a document file to upload",
+        "removeFilter": "Remove filter",
+        "filter": "Filter",
+        "submit": "Submit",
+        "content": "Content",
+        "management": "Management",
+        "note": "Note",
+        "noResult": "No matching results",
+        "previous": "Previous",
+        "next": "Next",
+        "of": "of",
+        "userCreator": "Creator",
+        "yes": "Yes",
+        "no": "No",
+        "other": "Other",
+        "review": "Review",
+        "comment": "Comment",
+        "download": "Download",
+        "code": "Code",
+        "selected": "Selected"
+    },
+    "filter": {
+        "keyword": "Keyword",
+        "remove": "Remove",
+        "filterBy": "Filter by",
+        "noMatchingFilter": "No matching filter",
+        "hint": "Separated by commas",
+        "last28Days": "Last 28 days"
+    },
+    "delete": {
+        "confirmTitle": "Confirm delete",
+        "confirmMessage": "Are you sure you want to delete?"
+    },
+    "order": {
+        "illustrativeImage": "Illustrative Image",
+        "label": "Order",
+        "deadline": "Deadline",
+        "personInCharge": {
+            "label": "Person in charge",
+            "select": "Select person in charge"
+        },
+        "type": {
+            "label": "Order type",
+            "video": "Video",
+            "image": "Image",
+            "document": "Document"
+        }
+    },
+    "video": {
+        "label": "Video",
+        "thumbnail": "Thumbnail",
+        "mp3": "Mp3",
+        "trackList": "Track List",
+        "code": "Video code",
+        "resolution": "Resolution",
+        "duration": "Duration",
+        "count": "Video count",
+        "fps": "Frame rate",
+        "attributes": "Attributes",
+        "orientation": {
+            "label": "Orientation",
+            "horizontal": "Horizontal",
+            "vertical": "Vertical"
+        },
+        "fileSize": "File size",
+        "looped": "Looped",
+        "encoding": "Video Encoding",
+        "tag": "Tags"
+    },
+    "topic": {
+        "label": "Topic",
+        "name": "Topic",
+        "description": "Description",
+        "code": "Code",
+        "dateCreated": "Date created",
+        "dateUpdated": "Date updated",
+        "order": "Order",
+        "folder": "Folder"
+    },
+    "dashboard": {
+        "label": "Dashboard"
+    },
+    "image": {
+        "label": "Image",
+        "dimensions": "Dimensions"
+    },
+    "document": {
+        "label": "Document"
+    },
+    "asset": {
+        "label": "Asset",
+        "select": "Select asset"
+    },
+    "setting": {
+        "label": "Setting"
+    },
+    "log": {
+        "label": "Log"
+    },
+    "language": {
+        "english": "English",
+        "label": "Language",
+        "vietnamese": "Tiếng Việt",
+        "select": "Select language"
+    },
+    "channel": {
+        "code": "Channel code",
+        "lable": "Channel"
+    },
+    "system": {
+        "label": "System"
+    },
+    "validation": {
+        "emailFormat": "Please enter a valid email!",
+        "select": "Please select information!",
+        "radio": "Please choose information!",
+        "input": "Please enter information!",
+        "file": "File is required!",
+        "url": "Please enter a valid link format!",
+        "passwordMisMatch": "Password mis match!",
+        "passwordFormat": "Password must contain 1 uppercase character and at least 6 character",
+        "unique": "Data must not be duplicated"
+    },
+    "form": {
+        "searchPlaceholder": "Search..."
+    },
+    "status": {
+        "label": "Status",
+        "active": "Active",
+        "block": "Blocked",
+        "select": "Select status",
+        "approving": "Approving",
+        "approved": "Approved",
+        "new": "New",
+        "approve": "Approve",
+        "reject": "Reject",
+        "pass": "Pass",
+        "fail": "Fail",
+        "violate": "Violate",
+        "pending": "Pending",
+        "success": "Success",
+        "error": "Error"
+    },
+    "date": {
+        "year": {
+            "label": "Year"
+        },
+        "month": {
+            "label": "Month",
+            "january": "January",
+            "february": "February",
+            "march": "March",
+            "april": "April",
+            "may": "May",
+            "june": "June",
+            "july": "July",
+            "august": "August",
+            "september": "September",
+            "october": "October",
+            "november": "November",
+            "december": "December"
+        },
+        "hour": {
+            "label": "Hour"
+        },
+        "minute": {
+            "label": "Minute"
+        },
+        "second": {
+            "label": "Second"
+        }
+    },
+    "message": {
+        "createSuccessfully": "Create successfully!",
+        "deleteSuccessfully": "Delete successfully!",
+        "somethingWentWrong": "Something went wrong!",
+        "updateSuccessfully": "Update successfully!",
+        "eachLanguageCanOnlyHaveOneFile": "Each language can only have 1 file.",
+        "pleaseLoginChannelAgain": "Please login again to get new token",
+        "dataAlreadyExists": "Data already exists",
+        "emailAlreadyExist": "Email already exist",
+        "dataHasNotChanged": "Data has not changed",
+        "sendMessageSuccessfully": "Send message successfully",
+        "syncError7Days": "Sync errors in the past 7 days",
+        "syncDataIsProcessing": "Processing sync data"
+    },
+    "userProfile": {
+        "logout": "Log out"
+    },
+    "user": {
+        "label": "User",
+        "admin": "Admin",
+        "user": "User",
+        "manager": "Manager",
+        "permission": "Permission",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "birthday": "Date of birth",
+        "grantPermissionBy": "Permissions based on",
+        "address": "Current address",
+        "phoneNumber": "Phone number",
+        "taxNumber": "Tax number",
+        "idNumber": "ID number",
+        "idPlaceOfIssue": "Place of issue",
+        "idDateOfIssue": "Date of issue",
+        "emailVerified": "Email verified",
+        "accountType": "Account type",
+        "permanentResidence": "Permanent residence",
+        "passportNo": "Passport No.",
+        "passportPlaceOfIssue": "Passport place of issue",
+        "contractNumber": "Contract number",
+        "contractSignedDate": "Contract signed date",
+        "avatar": "Avatar",
+        "select": "Select user",
+        "title": "Title",
+        "accountManagement": "Account management"
+    }
+}

@@ -1,0 +1,297 @@
+{
+    "app": {
+        "title": "ANT Group",
+        "description": "Together we will succeed"
+    },
+    "accessDenied": {
+        "label": "Truy cập bị từ chối",
+        "title": "Bạn không có quyền truy cập trang này",
+        "des": "Liên hệ với quản trị viên hệ thống để có quyền truy cập",
+        "loginByOtherAccount": "Đăng nhập bằng tài khoản khác"
+    },
+    "auth": {
+        "login": "Đăng nhập",
+        "dontHaveAccount": "Bạn chưa có tài khoản?",
+        "alreadyHaveAccount": "Đã có tài khoản?",
+        "signUp": "Đăng ký",
+        "forgotPassword": "Quên mật khẩu",
+        "confirmEmail": "Xác nhận địa chỉ email",
+        "confirmEmailDescription": "Chúng tôi đã gửi một email xác nhận đến email bạn đăng ký. Kiểm tra thư mục spam nếu bạn không nhận được email nào.",
+        "goToLogin": "Đến trang đăng nhập",
+        "resendConfirmationEmail": "Gửi lại email xác thực",
+        "linkHasExpired": "Liên kết đã hết hạn",
+        "reEnterEmail": "Vui lòng nhập lại email",
+        "emailConfirmationSuccessful": "Xác nhận email thành công",
+        "yourAccountIsBeingApprovedByAdmin": "Tài khoản của bạn đang được Admin phê duyệt",
+        "forbiddenTitle": "Bạn không có quyền truy cập",
+        "forbiddenDescription": "Vui lòng liên hệ Admin để biết thêm chi tiết"
+    },
+    "action": {
+        "name": "Hành động",
+        "delete": "Xóa",
+        "update": "Cập nhật",
+        "create": "Thêm mới",
+        "view": "Xem",
+        "edit": "Sửa"
+    },
+    "common": {
+        "type": "Thể loại",
+        "status": "Trạng thái",
+        "deadline": "Thời hạn",
+        "userCreated": "User created",
+        "action": "Hành động",
+        "description": "Mô tả",
+        "iNo": "STT",
+        "update": "Cập nhật",
+        "create": "Thêm mới",
+        "detail": "Chi tiết ",
+        "delete": "Xoá",
+        "upload": "Tải lên",
+        "dateCreated": "Ngày tạo",
+        "dateUpdated": "Ngày cập nhật",
+        "uploadSubTitle": "hoặc kéo thả tệp vào đây",
+        "uploadTitleMp3": "Chọn tệp MP3 để tải lên",
+        "uploadTitleMp4": "Chọn tệp MP4 để tải lên",
+        "uploadTitleImage": "Chọn hình ảnh để tải lên",
+        "uploadTitleDocument": "Chọn tài liệu để tải lên",
+        "removeFilter": "Xoá bộ lọc",
+        "filter": "Bộ lọc",
+        "submit": "Đồng ý",
+        "content": "Nội dung",
+        "management": "Quản lý",
+        "note": "Ghi chú",
+        "noResult": "Không có kết quả phù hợp",
+        "previous": "Trước",
+        "next": "Tiếp",
+        "of": "trong số",
+        "userCreator": "Người tạo",
+        "yes": "Có",
+        "no": "Không",
+        "other": "Khác",
+        "review": "Đánh giá",
+        "comment": "Bình luận",
+        "download": "Tải xuống",
+        "code": "Mã",
+        "selected": "Đã chọn"
+    },
+    "filter": {
+        "keyword": "Từ khoá",
+        "remove": "Xoá",
+        "filterBy": "Lọc theo",
+        "noMatchingFilter": "Không có bộ lọc nào khớp",
+        "hint": "Phân tách bằng dấu phẩy",
+        "last28Days": "28 ngày qua"
+    },
+    "delete": {
+        "confirmTitle": "Xác nhận xoá",
+        "confirmMessage": "Bạn có chắc muốn xoá?"
+    },
+    "order": {
+        "illustrativeImage": "Hình minh họa",
+        "label": "Đặt hàng",
+        "deadline": "Thời hạn",
+        "personInCharge": {
+            "label": "Người thực hiện",
+            "select": "Chọn người thực hiện"
+        },
+        "type": {
+            "label": "Loại đặt hàng",
+            "video": "Video",
+            "image": "Hình ảnh",
+            "document": "Tài liệu"
+        }
+    },
+    "video": {
+        "label": "Video",
+        "thumbnail": "Thumbnail",
+        "mp3": "Mp3",
+        "trackList": "Track List",
+        "code": "Mã video",
+        "resolution": "Độ phân giải",
+        "duration": "Thời lượng",
+        "count": "Số video",
+        "fps": "Tốc độ khung hình",
+        "attributes": "Thuộc tính",
+        "orientation": {
+            "label": "Hướng",
+            "horizontal": "Ngang",
+            "vertical": "Dọc"
+        },
+        "fileSize": "Kích thước file",
+        "looped": "Lặp lại",
+        "encoding": "Video Encoding",
+        "tag": "Từ khoá"
+    },
+    "topic": {
+        "label": "Topic",
+        "name": "Tên",
+        "description": "Mô tả",
+        "code": "Code",
+        "dateCreated": "Ngày tạo",
+        "dateUpdated": "Ngày cập nhật",
+        "order": "Thứ tự",
+        "folder": "Thư mục"
+    },
+    "dashboard": {
+        "label": "Dashboard"
+    },
+    "image": {
+        "label": "Hình ảnh",
+        "dimensions": "Kích thước"
+    },
+    "document": {
+        "label": "Tài liệu"
+    },
+    "asset": {
+        "label": "Kho nội dung",
+        "select": "Chọn kho nội dung"
+    },
+    "setting": {
+        "label": "Cài đặt"
+    },
+    "log": {
+        "label": "Log"
+    },
+    "language": {
+        "english": "English",
+        "label": "Ngôn ngữ",
+        "vietnamese": "Tiếng Việt",
+        "select": "Chọn ngôn ngữ"
+    },
+    "channel": {
+        "code": "Mã kênh",
+        "lable": "Kênh"
+    },
+    "system": {
+        "label": "Hệ thống"
+    },
+    "validation": {
+        "emailFormat": "Vui lòng nhập đúng định dạng Email!",
+        "select": "Vui lòng chọn thông tin!",
+        "radio": "Vui lòng chọn thông tin!",
+        "input": "Vui lòng nhập thông tin!",
+        "file": "Vui lòng chọn file!",
+        "url": "Đường dẫn không hợp lệ!",
+        "passwordMisMatch": "Mật khẩu không khớp!",
+        "passwordFormat": "Mật khẩu bao gồm chữ cái viết hoa và có ít nhất 6 kí tự",
+        "unique": "Dữ liệu không được trùng nhau"
+    },
+    "form": {
+        "searchPlaceholder": "Tìm kiếm..."
+    },
+    "status": {
+        "label": "Trạng thái",
+        "active": "Kích hoạt",
+        "block": "Khoá",
+        "select": "Chọn trạng thái",
+        "approving": "Đang duyệt",
+        "approved": "Đã duyệt",
+        "new": "Mới",
+        "approve": "Duyệt",
+        "reject": "Từ chối",
+        "pass": "Đạt",
+        "fail": "Từ chối",
+        "violate": "Vi phạm",
+        "pending": "Đang chờ",
+        "success": "Thành công",
+        "error": "Lỗi"
+    },
+    "date": {
+        "year": {
+            "label": "Năm"
+        },
+        "month": {
+            "label": "Tháng",
+            "january": "Tháng 1",
+            "february": "Tháng 2",
+            "march": "Tháng 3",
+            "april": "Tháng 4",
+            "may": "Tháng 5",
+            "june": "Tháng 6",
+            "july": "Tháng 7",
+            "august": "Tháng 8",
+            "september": "Tháng 9",
+            "october": "Tháng 10",
+            "november": "Tháng 11",
+            "december": "Tháng 12"
+        },
+        "hour": {
+            "label": "Giờ"
+        },
+        "minute": {
+            "label": "Phút"
+        },
+        "second": {
+            "label": "Giây"
+        }
+    },
+    "message": {
+
+        "createSuccessfully": "ORDR USER Thêm thành công!",
+        "deleteSuccessfully": "Xoá thành công!",
+        "somethingWentWrong": "Đã xảy ra lỗi, vui lòng thử lại!",
+        "updateSuccessfully": "Cập nhật thông tin thành công!",
+        "eachLanguageCanOnlyHaveOneFile": "Mỗi ngôn ngữ chỉ được có 1 file",
+        "pleaseLoginChannelAgain": "Vui lòng đăng nhập lại để lấy token mới",
+        "dataAlreadyExists": "Dữ liệu đã tồn tại",
+        "emailAlreadyExist": "Email đã được sử dụng",
+        "dataHasNotChanged": "Dữ liệu không có gì thay đổi",
+        "sendMessageSuccessfully": "Gửi tin nhắn thành công",
+        "syncError7Days": "Đồng bộ lỗi 7 ngày qua",
+        "syncDataIsProcessing": "Đang thực hiện đồng bộ dữ liệu"
+    },
+
+    "messageBE": {
+        USER{
+
+        }
+
+        ORER{}
+
+
+        "createSuccessfully": "Thêm thành công!",
+        "deleteSuccessfully": "Xoá thành công!",
+        "somethingWentWrong": "Đã xảy ra lỗi, vui lòng thử lại!",
+        "updateSuccessfully": "Cập nhật thông tin thành công!",
+        "eachLanguageCanOnlyHaveOneFile": "Mỗi ngôn ngữ chỉ được có 1 file",
+        "pleaseLoginChannelAgain": "Vui lòng đăng nhập lại để lấy token mới",
+        "dataAlreadyExists": "Dữ liệu đã tồn tại",
+        "emailAlreadyExist": "Email đã được sử dụng",
+        "dataHasNotChanged": "Dữ liệu không có gì thay đổi",
+        "sendMessageSuccessfully": "Gửi tin nhắn thành công",
+        "syncError7Days": "Đồng bộ lỗi 7 ngày qua",
+        "syncDataIsProcessing": "Đang thực hiện đồng bộ dữ liệu"
+    },
+
+    "userProfile": {
+        "logout": "Đăng xuất"
+    },
+    "user": {
+        "label": "Người dùng",
+        "admin": "Admin",
+        "user": "Người dùng",
+        "manager": "Quản lý",
+        "permission": "Phân quyền",
+        "firstName": "Họ",
+        "lastName": "Tên",
+        "birthday": "Ngày sinh",
+        "grantPermissionBy": "Phân quyền theo",
+        "address": "Địa chỉ hiện tại",
+        "phoneNumber": "Điện thoại",
+        "taxNumber": "Mã số thuế",
+        "idNumber": "Số CMND/Số CCCD",
+        "idPlaceOfIssue": "Nơi cấp",
+        "idDateOfIssue": "Ngày cấp",
+        "emailVerified": "Đã xác nhận email",
+        "accountType": "Loại tài khoản",
+        "permanentResidence": "Địa chỉ thường trú",
+        "passportNo": "Số hộ chiếu",
+        "passportPlaceOfIssue": "Nơi cấp hộ chiếu",
+        "contractNumber": "Số hợp đồng",
+        "contractSignedDate": "Ngày ký hợp đồng",
+        "avatar": "Ảnh đại diện",
+        "select": "Chọn người dùng",
+        "title": "Danh xưng",
+        "accountManagement": "Quản lý tài khoản"
+    }
+}
