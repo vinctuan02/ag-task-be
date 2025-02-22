@@ -1,12 +1,15 @@
-import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { HttpErrorMessage } from 'src/common/dtos/response/error/enums/http.error.message.enum';
+import {
+	ErrorDetail,
+	ErrorResDto,
+} from 'src/common/dtos/response/error/errors-response.dto';
 import { In, TreeRepository } from 'typeorm';
 import { CreateTopicDto } from './dto/req/create-topic.dto';
 import { UpdateTopicDto } from './dto/req/update-topic.dto';
-import { Topic } from './entities/topic.entity';
 import { UpdateTopicsPositionDto } from './dto/req/update-topics-position.dto';
-import { ErrorDetail, ErrorResDto } from 'src/common/dtos/response/error/errors-response.dto';
-import { HttpErrorMessage } from 'src/common/dtos/response/error/enums/http.error.message.enum';
+import { Topic } from './entities/topic.entity';
 
 @Injectable()
 export class TopicService {
@@ -19,10 +22,12 @@ export class TopicService {
 		const { code, parentId } = payload;
 		const errors: ErrorDetail[] = [];
 
-		const isExistByCode: Boolean = await this.checkIsExistByCode(code);
+		const isExistByCode: boolean = await this.checkIsExistByCode(code);
 
 		if (isExistByCode) {
-			errors.push(new ErrorDetail('code', 'message.codeTopicAlreadyExists'));
+			errors.push(
+				new ErrorDetail('code', 'message.codeTopicAlreadyExists'),
+			);
 		}
 
 		let parent: Topic | null = null;
@@ -32,7 +37,9 @@ export class TopicService {
 			});
 
 			if (!parent) {
-				errors.push(new ErrorDetail('parentId', 'message.parentTopicNotFound'));
+				errors.push(
+					new ErrorDetail('parentId', 'message.parentTopicNotFound'),
+				);
 			}
 		}
 
@@ -46,14 +53,14 @@ export class TopicService {
 
 		if (errors.length > 0) {
 			throw new ErrorResDto(
-				HttpStatus.BAD_REQUEST, 
+				HttpStatus.BAD_REQUEST,
 				'message.createTopicFailed',
 				HttpErrorMessage.BAD_REQUEST,
-				errors
+				errors,
 			);
 		}
 
-		const newTopic = await this.topicRepository.create(topic);
+		const newTopic = this.topicRepository.create(topic);
 
 		return await this.topicRepository.save(newTopic);
 	}
@@ -62,11 +69,11 @@ export class TopicService {
 		const topic = await this.topicRepository.findOne({ where: { id } });
 		if (!topic) {
 			throw new ErrorResDto(
-				HttpStatus.BAD_REQUEST, 
+				HttpStatus.BAD_REQUEST,
 				'message.getTopicByIdFailed',
 				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('id', 'message.topicNotFound')]
-			  );
+				[new ErrorDetail('id', 'message.topicNotFound')],
+			);
 		}
 
 		return await this.topicRepository.findDescendantsTree(topic);
@@ -77,13 +84,13 @@ export class TopicService {
 		// return trees
 		const sortTree = (nodes: Topic[]): void => {
 			nodes.sort((a, b) => a.order - b.order);
-			nodes.forEach(node => {
-			  if (node.children && node.children.length > 0) {
-				sortTree(node.children);
-			  }
+			nodes.forEach((node) => {
+				if (node.children && node.children.length > 0) {
+					sortTree(node.children);
+				}
 			});
 		};
-		
+
 		sortTree(trees);
 		return trees;
 	}
@@ -103,41 +110,47 @@ export class TopicService {
 	}
 
 	async updateTopicsPosition(
-		payload: UpdateTopicsPositionDto
+		payload: UpdateTopicsPositionDto,
 	): Promise<Topic[]> {
 		// Lọc bỏ các trường thừa, chỉ lấy id và order
-		const cleanTopics = payload.data.map(({ id, order }) => ({ id, order }));
-		
-		const ids = cleanTopics.map(topic => topic.id);
+		const cleanTopics = payload.data.map(({ id, order }) => ({
+			id,
+			order,
+		}));
+
+		const ids = cleanTopics.map((topic) => topic.id);
 		const cases = cleanTopics
-		  .map(topic => `WHEN id = '${topic.id}' THEN ${topic.order}`)
-		  .join(' ');
-	  
+			.map((topic) => `WHEN id = '${topic.id}' THEN ${topic.order}`)
+			.join(' ');
+
 		await this.topicRepository
-		  .createQueryBuilder()
-		  .update(Topic)
-		  .set({ order: () => `CASE ${cases} ELSE order END` })
-		  .where('id IN (:...ids)', { ids })
-		  .execute();
-	  
+			.createQueryBuilder()
+			.update(Topic)
+			.set({ order: () => `CASE ${cases} ELSE order END` })
+			.where('id IN (:...ids)', { ids })
+			.execute();
+
 		return await this.topicRepository.findBy({ id: In(ids) });
 	}
 
 	async update(id: string, payload: UpdateTopicDto): Promise<Topic> {
 		const { code, parentId } = payload;
-		const errors: ErrorDetail[] = []
+		const errors: ErrorDetail[] = [];
 
 		const topicById = await this.topicRepository.findOne({ where: { id } });
 
 		if (!topicById) {
-			errors.push({ key: 'id', message: 'message.topicNotFound'});
+			errors.push({ key: 'id', message: 'message.topicNotFound' });
 		}
 
 		if (code && topicById?.code !== code) {
 			const isExistByCode: boolean = await this.checkIsExistByCode(code);
 
 			if (isExistByCode) {
-				errors.push({key: 'code', message: 'message.codeTopicAlreadyExists'});
+				errors.push({
+					key: 'code',
+					message: 'message.codeTopicAlreadyExists',
+				});
 			}
 		}
 
@@ -149,17 +162,20 @@ export class TopicService {
 			});
 
 			if (!parent) {
-				errors.push({key: 'parentId', message: 'message.parentTopicNotFound'});
+				errors.push({
+					key: 'parentId',
+					message: 'message.parentTopicNotFound',
+				});
 			}
 		}
 
 		if (errors.length > 0 || !topicById) {
 			throw new ErrorResDto(
-				HttpStatus.BAD_REQUEST, 
+				HttpStatus.BAD_REQUEST,
 				'message.updateTopicByIdFailed',
 				HttpErrorMessage.BAD_REQUEST,
-				errors
-			)
+				errors,
+			);
 		}
 
 		topicById.code = payload.code ?? topicById.code;
@@ -170,7 +186,7 @@ export class TopicService {
 
 		return await this.topicRepository.save(topicById);
 	}
-	
+
 	async deleteByTopicById(id: string) {
 		const topic = await this.topicRepository.findOne({ where: { id } });
 		if (!topic) {
@@ -193,6 +209,6 @@ export class TopicService {
 	}
 
 	async checkExistsById(id: string): Promise<boolean> {
-		return await this.topicRepository.existsBy({id})
+		return await this.topicRepository.existsBy({ id });
 	}
 }

@@ -1,18 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
-import { SuccessResDto } from 'src/common/dtos/response/success/success-reponse.dto';
-import { CreateFileDto } from './dto/requests/create-file.dto';
-import { GetUploadUrlDto } from './dto/requests/get-url-upload.req.dto';
-import { ResGetDownloadUrl } from './dto/responses/get-download-url.res.dto';
-import { ResGetUploadUrl } from './dto/responses/get-upload-url.res.dto';
-import { File } from './entities/file.entity';
-import { ENTITY_TYPE_ENUM } from './enums/entity-type.enum';
-import { FileService } from './file.service';
+import { Controller } from '@nestjs/common';
 
 @Controller('file')
 export class FileController {
 	// constructor(private readonly fileService: FileService) {}
-
 	// // crud
 	// @Post()
 	// async create(
@@ -21,20 +11,16 @@ export class FileController {
 	// 	const result = await this.fileService.create(createFileDto);
 	// 	return new SuccessResDto(201, 'Create file dto oke', result);
 	// }
-
 	// @Get()
 	// async getAll(): Promise<SuccessResDto<File[]>> {
 	// 	const result = await this.fileService.findAll();
 	// 	return new SuccessResDto(200, 'Get all file oke', result);
 	// }
-
 	// @Get(':id')
 	// async findOne(@Param('id') id: string): Promise<SuccessResDto<File>> {
 	// 	const result = await this.fileService.findOne(id);
-
 	// 	return new SuccessResDto(200, 'Get file by id oke', result);
 	// }
-
 	// @Get('entity/:entityType/:entityId')
 	// async findByEntity(
 	// 	@Param('entityType') entityType: ENTITY_TYPE_ENUM,
@@ -50,13 +36,11 @@ export class FileController {
 	// 		result,
 	// 	);
 	// }
-
 	// @Delete(':id')
 	// async remove(@Param('id') id: string): Promise<SuccessResDto<null>> {
 	// 	await this.fileService.remove(id);
 	// 	return new SuccessResDto(204, 'Delete file oke');
 	// }
-
 	// // google-cloud-storage
 	// @ApiOperation({ summary: 'Get link upload' })
 	// @Post('get-link-upload')
@@ -71,7 +55,6 @@ export class FileController {
 	// 		result,
 	// 	);
 	// }
-
 	// @Post('submit-upload')
 	// async submitUpload(
 	// 	@Body('submitKey') submitKey: string,
@@ -79,7 +62,6 @@ export class FileController {
 	// 	const result = await this.fileService.submitUpload(submitKey);
 	// 	return new SuccessResDto(200, 'Submit upload oke', result);
 	// }
-
 	// @Get('get-url-down/:id')
 	// async getDownloadUrlById(
 	// 	@Param('id') id: string,

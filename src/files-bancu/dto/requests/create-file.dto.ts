@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { ENTITY_TYPE_ENUM } from 'src/files/enums/entity-type.enum';
+import { ENTITY_TYPE_ENUM } from 'src/files-bancu/enums/entity-type.enum';
 
 export class CreateFileDto {
 	@IsEnum(ENTITY_TYPE_ENUM)

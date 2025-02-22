@@ -1,5 +1,5 @@
-export enum TypeOrder {
-    PDF = 'pdf',
-    IMAGE = 'image',
-    VIDEO = 'video'
+export enum TypeOrderProductEnum {
+	PDF = 'pdf',
+	IMAGE = 'image',
+	VIDEO = 'video',
 }

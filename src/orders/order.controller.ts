@@ -1,5 +1,4 @@
 import {
-	
 	Body,
 	Controller,
 	Delete,
@@ -8,18 +7,16 @@ import {
 	Patch,
 	Post,
 	Query,
-	Request,
 } from '@nestjs/common';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { FindAllDto } from 'src/common/dtos/request/find-all.dto';
 // import { PageResponse } from 'src/common/dtos/response/pagination/page-response.dto';
+import { DataPagination } from 'src/common/dtos/response/pagination/data-pagination.dto';
 import { SuccessResDto } from 'src/common/dtos/response/success/success-reponse.dto';
 import { CreateOrderDto } from './dto/req/create-order.dto';
 import { UpdateOrderDto } from './dto/req/update-order.dto';
-import { OrderDto } from './dto/res/order.entity.dto';
 import { Order } from './entities/order.entity';
 import { OrderService } from './order.service';
-import { DataPagination } from 'src/common/dtos/response/pagination/data-pagination.dto';
 
 @Controller('orders')
 export class OrderController {
@@ -31,10 +28,14 @@ export class OrderController {
 		@Body() createOrderDto: CreateOrderDto,
 		// @Request() req: RequestWithUser,
 	): Promise<SuccessResDto<Order>> {
-		const userId: string = "38306fb4-3e40-4dc1-9411-6b4e17b59d12"; // fix
+		const userId: string = '38306fb4-3e40-4dc1-9411-6b4e17b59d12'; // fix
 
 		const result = await this.orderService.create(createOrderDto, userId);
-		return new SuccessResDto(201, 'Create new order oke', result);
+		return new SuccessResDto(
+			201,
+			'message.createOrderSuccessfully',
+			result,
+		);
 	}
 
 	@ApiOperation({ summary: 'Get all orders' })
@@ -47,7 +48,11 @@ export class OrderController {
 			query.pageSize ?? 10,
 			query?.keyword,
 		);
-		return new SuccessResDto(200, 'Get orders oke', result);
+		return new SuccessResDto(
+			200,
+			'message.getAllOrdersSuccessfully',
+			result,
+		);
 	}
 
 	@ApiOperation({ summary: 'Get order by id' })
@@ -57,11 +62,13 @@ export class OrderController {
 		example: '4ac9a511-1d81-473e-a4bc-0290a7ae6506',
 	})
 	@Get(':id')
-	async findOne(
-		@Param('id') id: string,
-	): Promise<SuccessResDto<Order>> {
+	async findOne(@Param('id') id: string): Promise<SuccessResDto<Order>> {
 		const result = await this.orderService.findOne(id);
-		return new SuccessResDto(200, 'Get order by id oke', result);
+		return new SuccessResDto(
+			200,
+			'message.getOrderByIdSucessfully',
+			result,
+		);
 	}
 
 	@ApiOperation({ summary: 'Update a order' })
@@ -76,7 +83,11 @@ export class OrderController {
 		@Body() updateOrderDto: UpdateOrderDto,
 	): Promise<SuccessResDto<Order>> {
 		const result = await this.orderService.update(id, updateOrderDto);
-		return new SuccessResDto(200, 'Update order ok', result);
+		return new SuccessResDto(
+			200,
+			'message.updateOrderByIdSuccessfully',
+			result,
+		);
 	}
 
 	// // @Public() // dev-test public
@@ -90,13 +101,11 @@ export class OrderController {
 	// //   return this.orderService.updateResourceUrl(id, url);
 	// // }
 
-	// @ApiOperation({ summary: 'Delete order oke' })
-	// @ApiParam({ name: 'id', required: true, example: '' })
-	// @Delete(':id')
-	// async remove(
-	// 	@Param('id') id: string,
-	// ): Promise<SuccessResDto<boolean>> {
-	// 	await this.orderService.remove(id);
-	// 	return new SuccessResDto(204, 'Delete order oke');
-	// }
+	@ApiOperation({ summary: 'Delete order oke' })
+	@ApiParam({ name: 'id', required: true, example: '' })
+	@Delete(':id')
+	async remove(@Param('id') id: string): Promise<SuccessResDto<boolean>> {
+		await this.orderService.remove(id);
+		return new SuccessResDto(204, 'message.deleteOrderByIdSuccessfully');
+	}
 }

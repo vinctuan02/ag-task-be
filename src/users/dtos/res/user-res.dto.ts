@@ -1,33 +1,36 @@
 import { Expose } from 'class-transformer';
 
 export class UserResDto {
-  @Expose()
-  name?: string;
+	@Expose()
+	id: string;
 
-  @Expose()
-  email?: string;
+	@Expose()
+	name?: string;
 
-  @Expose()
-  avatar?: string;
+	@Expose()
+	email?: string;
 
-  @Expose()
-  phoneNumber?: string;
+	@Expose()
+	avatar?: string;
 
-  @Expose()
-  dateOfBirth?: Date;
+	@Expose()
+	phoneNumber?: string;
 
-  @Expose()
-  groupId?: string;
+	@Expose()
+	dateOfBirth?: Date;
 
-  @Expose()
-  isActive?: boolean;
+	@Expose()
+	groupId?: string;
 
-  @Expose()
-  emailVerified?: boolean;
+	@Expose()
+	isActive?: boolean;
 
-  @Expose()
-  sex?: string;
+	@Expose()
+	emailVerified?: boolean;
 
-  @Expose()
-  title?: string;
+	@Expose()
+	sex?: string;
+
+	@Expose()
+	title?: string;
 }

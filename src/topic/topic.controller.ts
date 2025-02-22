@@ -7,17 +7,13 @@ import {
 	Patch,
 	Post,
 } from '@nestjs/common';
-import {
-	ApiOperation,
-	ApiResponse,
-	ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SuccessResDto } from 'src/common/dtos/response/success/success-reponse.dto';
 import { CreateTopicDto } from './dto/req/create-topic.dto';
-import { Topic } from './entities/topic.entity';
-import { TopicService } from './topic.service'
 import { UpdateTopicDto } from './dto/req/update-topic.dto';
 import { UpdateTopicsPositionDto } from './dto/req/update-topics-position.dto';
+import { Topic } from './entities/topic.entity';
+import { TopicService } from './topic.service';
 
 @ApiTags('Topics')
 @Controller('topics')
@@ -38,18 +34,20 @@ export class TopicController {
 		return new SuccessResDto(200, 'message.createTopicSuccessfully', topic);
 	}
 
-    @Get(':id')
+	@Get(':id')
 	@ApiOperation({ summary: 'Get topic by id' })
 	@ApiResponse({
 		status: 200,
 		description: 'Get topic by id successfully',
 		type: SuccessResDto,
 	})
-	async getTopicById(
-        @Param('id') id: string
-    ) {
+	async getTopicById(@Param('id') id: string) {
 		const topic = await this.topicService.getTopicById(id);
-		return new SuccessResDto(200, 'message.getTopicByIdSuccessfully', topic);
+		return new SuccessResDto(
+			200,
+			'message.getTopicByIdSuccessfully',
+			topic,
+		);
 	}
 
 	@Get()
@@ -61,43 +59,48 @@ export class TopicController {
 	})
 	async findAll() {
 		const allTopics = await this.topicService.finAll();
-		return new SuccessResDto(200, 'message.getAllTopicSuccessfully', allTopics);
+		return new SuccessResDto(
+			200,
+			'message.getAllTopicSuccessfully',
+			allTopics,
+		);
 	}
 
 	@Patch('update-position')
-	async updateTopicsPosition (
-		@Body() updateTopicsPositionDto: UpdateTopicsPositionDto
-	): Promise<SuccessResDto<null>>{
+	async updateTopicsPosition(
+		@Body() updateTopicsPositionDto: UpdateTopicsPositionDto,
+	): Promise<SuccessResDto<null>> {
 		await this.topicService.updateTopicsPosition(updateTopicsPositionDto);
-		return new SuccessResDto(200, 'message.updateTopicsPositionSuccessfully')
+		return new SuccessResDto(
+			200,
+			'message.updateTopicsPositionSuccessfully',
+		);
 	}
 
 	@Patch(':id')
-	async updateTopic (
+	async updateTopic(
 		@Param('id') id: string,
-		@Body() updateTopicDto: UpdateTopicDto
-	):Promise<SuccessResDto<Topic>> {
-		const topic = await this.topicService.update(id, updateTopicDto)
-		return new SuccessResDto(200, 'Update topic oke', topic)
+		@Body() updateTopicDto: UpdateTopicDto,
+	): Promise<SuccessResDto<Topic>> {
+		const topic = await this.topicService.update(id, updateTopicDto);
+		return new SuccessResDto(200, 'Update topic oke', topic);
 	}
 
-    @Delete('clear')
-    @ApiOperation({ summary: 'Delete all topics' })
-    @ApiResponse({
-      status: 200,
-      description: 'All topics deleted successfully',
-      type: SuccessResDto,
-    })
-    async deleteAllTopics(): Promise<SuccessResDto<null>> {
-      await this.topicService.deleteAllTopics();
-      return new SuccessResDto(204, 'All topics deleted successfully');
-    }
+	@Delete('clear')
+	@ApiOperation({ summary: 'Delete all topics' })
+	@ApiResponse({
+		status: 200,
+		description: 'All topics deleted successfully',
+		type: SuccessResDto,
+	})
+	async deleteAllTopics(): Promise<SuccessResDto<null>> {
+		await this.topicService.deleteAllTopics();
+		return new SuccessResDto(204, 'All topics deleted successfully');
+	}
 
-    @Delete(':id')
-    async deleteTopic(
-		@Param('id') id: string
-	): Promise<SuccessResDto<null>>{
-        await this.topicService.deleteByTopicById(id)
-		return new SuccessResDto(204, "message.deleteTopicSucessfully")
-    }
+	@Delete(':id')
+	async deleteTopic(@Param('id') id: string): Promise<SuccessResDto<null>> {
+		await this.topicService.deleteByTopicById(id);
+		return new SuccessResDto(204, 'message.deleteTopicSucessfully');
+	}
 }

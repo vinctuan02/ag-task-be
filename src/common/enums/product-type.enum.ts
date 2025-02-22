@@ -1,6 +1,6 @@
-export enum ProductType {
-	IMAGE = 'Image',
-	PDF = 'Pdf',
-	AUDIO = 'Audio',
-	VIDEO = 'Video',
-}
+// export enum ProductType {
+// 	IMAGE = 'Image',
+// 	PDF = 'Pdf',
+// 	AUDIO = 'Audio',
+// 	VIDEO = 'Video',
+// }

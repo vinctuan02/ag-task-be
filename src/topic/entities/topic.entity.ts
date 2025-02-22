@@ -24,19 +24,18 @@ export class Topic extends BaseEntity {
 	@TreeChildren({ cascade: true })
 	children: Topic[];
 
-	@Column()
+	@Column({ unique: true })
 	code: string;
 
-	@Column({nullable: true})
+	@Column({ nullable: true })
 	description: string;
 
-	@Column({nullable: true})
+	@Column({ nullable: true })
 	note: string;
 
 	@Column()
-  	order: number;
+	order: number;
 
-  // (Tùy chọn) Nếu cần truy xuất các Order liên quan từ Topic:
-	@OneToMany(() => Order, order => order.topic)
+	@OneToMany(() => Order, (order) => order.topic)
 	orders: Order[];
 }
