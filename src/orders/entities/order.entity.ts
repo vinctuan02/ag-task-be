@@ -54,7 +54,7 @@ export class Order extends BaseEntity {
 	topic: Topic;
 
 	@OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order, {
-		cascade: true,
+		 onDelete: 'CASCADE' 
 	})
 	orderProduct: OrderProduct[];
 }

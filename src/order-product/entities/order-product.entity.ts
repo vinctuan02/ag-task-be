@@ -31,7 +31,7 @@ export class OrderProduct extends BaseEntity {
 	@Column()
 	type: TypeOrderProductEnum;
 
-	@ManyToOne(() => Order, (order) => order.orderProduct, { eager: true })
+	@ManyToOne(() => Order, (order) => order.orderProduct, { eager: true, onDelete: 'CASCADE' })
 	@JoinColumn({ name: 'order_id' })
 	order: Order;
 
