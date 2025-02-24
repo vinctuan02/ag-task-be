@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MetadataDto } from 'src/common/dtos/response/pagination/metadata.dto';
 // import { PageResponse } from 'src/common/dtos/response/pagination/page-response.dto';
@@ -16,6 +16,9 @@ import { Brackets, Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/req/create-order.dto';
 import { UpdateOrderDto } from './dto/req/update-order.dto';
 import { Order } from './entities/order.entity';
+import { TypeOrderProductEnum } from './enums/type-order.enum';
+import { OrderProductService } from 'src/order-product/order-product.service';
+import { CreateOrderProductDto } from 'src/order-product/dto/req/create-order-product.dto';
 
 @Injectable()
 export class OrderService {
@@ -24,6 +27,9 @@ export class OrderService {
 		private readonly orderRepository: Repository<Order>,
 		private readonly userService: UsersService,
 		private readonly topicService: TopicService,
+
+		@Inject(forwardRef(() => OrderProductService))
+		private readonly orderProductService: OrderProductService
 		// private readonly fileService: FileService,
 	) {}
 
@@ -31,7 +37,7 @@ export class OrderService {
 		createOrderDto: CreateOrderDto,
 		userId: string,
 	): Promise<Order> {
-		const { topicId } = createOrderDto;
+		const { topicId, type } = createOrderDto;
 
 		const errors: ErrorDetail[] = [];
 
@@ -52,6 +58,8 @@ export class OrderService {
 			topic: { id: topicId } as Topic,
 		});
 
+		// 
+
 		if (errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
@@ -61,7 +69,28 @@ export class OrderService {
 			);
 		}
 
-		return await this.orderRepository.save(newOrder);
+		const savedOrder = await this.orderRepository.save(newOrder);
+
+		if(type=== TypeOrderProductEnum.VIDEO) {
+			// api tao order-product 
+
+			const createOrderProductThumbnailDto: CreateOrderProductDto = {
+					note: savedOrder.note,
+					type: TypeOrderProductEnum.IMAGE,
+					orderId: savedOrder.id
+			}
+
+			const createOrderProductVideoDto: CreateOrderProductDto = {
+				note: savedOrder.note,
+				type: TypeOrderProductEnum.VIDEO,
+				orderId: savedOrder.id
+			}
+
+			await this.orderProductService.create(createOrderProductThumbnailDto)
+			await this.orderProductService.create(createOrderProductVideoDto)
+		}
+
+		return savedOrder;
 	}
 
 	async findAll(
@@ -140,14 +169,6 @@ export class OrderService {
 				[new ErrorDetail('orderId', 'message.orderNotFound')],
 			);
 		}
-
-		// const orderDto = plainToInstance(OrderDto, orderById);
-
-		// const resGetDownloadUrl = await this.fileService.getDownloadUrlById(
-		// 	orderDto.gcsFilesId,
-		// );
-
-		// orderDto.resourceUrl = resGetDownloadUrl.url;
 
 		return orderById;
 	}

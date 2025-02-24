@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpErrorMessage } from 'src/common/dtos/response/error/enums/http.error.message.enum';
 import {
@@ -13,12 +13,14 @@ import { Brackets, Repository } from 'typeorm';
 import { CreateOrderProductDto } from './dto/req/create-order-product.dto';
 import { UpdateOrderProductDto } from './dto/req/update-order-product.dto';
 import { OrderProduct } from './entities/order-product.entity';
+import { Message } from 'src/common/message/message';
 
 @Injectable()
 export class OrderProductService {
 	constructor(
 		@InjectRepository(OrderProduct)
 		private readonly orderProductRepository: Repository<OrderProduct>,
+		@Inject(forwardRef(() => OrderService))
 		private readonly orderService: OrderService,
 		private readonly userService: UsersService,
 	) {}
@@ -31,13 +33,13 @@ export class OrderProductService {
 			await this.orderService.checkIsExistsById(orderId);
 
 		if (!isOrderExistsById) {
-			errors.push(new ErrorDetail('orderId', 'message.orderNotFound'));
+			errors.push(new ErrorDetail('orderId', Message.orderProduct.find.byId.failed));
 		}
 
 		if (errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.createOrderProductFailed',
+				Message.orderProduct.create.failed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -95,9 +97,9 @@ export class OrderProductService {
 		if (!orderProductById) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.findOrderProductByIdFailed',
+				Message.orderProduct.find.byId.failed,
 				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('orderId', 'message.orderProductNotFound')],
+				[new ErrorDetail('orderId', Message.orderProduct.find.byId.failed)],
 			);
 		}
 
@@ -120,7 +122,7 @@ export class OrderProductService {
 			errors.push(
 				new ErrorDetail(
 					'orderProductId',
-					'message.orderProductNotFound',
+					Message.orderProduct.find.byId.failed
 				),
 			);
 		}
@@ -130,7 +132,7 @@ export class OrderProductService {
 				await this.orderService.checkIsExistsById(orderId);
 			if (!isOrderExistsById) {
 				errors.push(
-					new ErrorDetail('orderId', 'message.orderNotFound'),
+					new ErrorDetail('orderId', Message.order.find.byId.failed),
 				);
 			}
 		}
@@ -139,7 +141,7 @@ export class OrderProductService {
 			const isUserExistsById =
 				await this.userService.checkExistsById(assigneeId);
 			if (!isUserExistsById) {
-				errors.push(new ErrorDetail('userId', 'message.userNotFound'));
+				errors.push(new ErrorDetail('userId', Message.user.find.byId.failed));
 			}
 		}
 
@@ -150,7 +152,7 @@ export class OrderProductService {
 		if (errors.length > 0 || !orderProductById) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.updateOrderProductFailed',
+				Message.orderProduct.update.failed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -169,12 +171,12 @@ export class OrderProductService {
 		if (!orderProduct) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.deleteOrderProductByIdFailed',
+				Message.orderProduct.delete.failed,
 				HttpErrorMessage.BAD_REQUEST,
 				[
 					new ErrorDetail(
 						'orderProductId',
-						'message.orderProductNotFound',
+						Message.orderProduct.find.byId.failed
 					),
 				],
 			);

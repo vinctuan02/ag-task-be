@@ -16,8 +16,8 @@ export class OrderProduct extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
-	// @Column()
-	// order_id: string;
+	@Column({name: 'order_id'})
+	orderId: string;
 
 	@Column({ nullable: true })
 	note: string;
