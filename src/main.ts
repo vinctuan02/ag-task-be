@@ -5,6 +5,7 @@ import {
 	ErrorDetail,
 	ErrorResDto,
 } from './common/dtos/response/error/errors-response.dto';
+import { setupSwagger } from './swagger/swagger.config';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -46,6 +47,8 @@ async function bootstrap() {
 			},
 		}),
 	);
+
+	setupSwagger(app);
 
 	app.enableCors({
 		origin: '*',
