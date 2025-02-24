@@ -1,1 +1,8 @@
 cấu hình lại message dạng object
+
+chỉ được thêm order vào topic con
+
+
+
+ko được xoá topic nếu đã có quan hệ
+update topic -> sửa lại code 

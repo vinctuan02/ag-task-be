@@ -27,7 +27,8 @@ export class CreateOrderDto {
   @IsString()
   illustrative_image_id?: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
+  @IsOptional()
   @IsString()
   code: string;
 
