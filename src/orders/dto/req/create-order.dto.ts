@@ -27,6 +27,10 @@ export class CreateOrderDto {
   @IsString()
   illustrative_image_id?: string;
 
+  @IsNotEmpty()
+  @IsString()
+  code: string;
+
   @ApiPropertyOptional({
     description: 'Additional note for the order',
     example: 'Please deliver between 9 AM and 5 PM',

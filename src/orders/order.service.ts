@@ -37,7 +37,7 @@ export class OrderService {
 		createOrderDto: CreateOrderDto,
 		userId: string,
 	): Promise<Order> {
-		const { topicId, type } = createOrderDto;
+		const { topicId, type, code } = createOrderDto;
 
 		const errors: ErrorDetail[] = [];
 
@@ -46,16 +46,26 @@ export class OrderService {
 			errors.push(new ErrorDetail('userId', 'message.userNotFound'));
 		}
 
-		const isTopicExistsById =
-			await this.topicService.checkExistsById(topicId);
-		if (!isTopicExistsById) {
+		// const topicById = await this.topicService.getTopicById(topicId)
+
+		// const isTopicExistsById =
+		// 	await this.topicService.checkExistsById(topicId);
+
+		// if(!code) {
+		// 	code = 
+		// }
+
+		try {
+			const topicById = await this.topicService.getTopicById(topicId);
+			
+		} catch (error) {
 			errors.push(new ErrorDetail('topicId', 'message.topicNotFound'));
 		}
 
 		const newOrder = this.orderRepository.create({
 			...createOrderDto,
 			userCreatorId: userId,
-			topic: { id: topicId } as Topic,
+			// topic: { id: topicId } as Topic,
 		});
 
 		// 
@@ -71,7 +81,8 @@ export class OrderService {
 
 		const savedOrder = await this.orderRepository.save(newOrder);
 
-		if(type=== TypeOrderProductEnum.VIDEO) {
+		// fix
+		if(type=== TypeOrderProductEnum.VIDEO) { 
 			// api tao order-product 
 
 			const createOrderProductThumbnailDto: CreateOrderProductDto = {
@@ -88,6 +99,14 @@ export class OrderService {
 
 			await this.orderProductService.create(createOrderProductThumbnailDto)
 			await this.orderProductService.create(createOrderProductVideoDto)
+		}else {
+			const createOrderProductDto: CreateOrderProductDto = {
+				note: savedOrder.note,
+				type: savedOrder.type,
+				orderId: savedOrder.id
+			}
+
+			await this.orderProductService.create(createOrderProductDto)
 		}
 
 		return savedOrder;
@@ -102,7 +121,7 @@ export class OrderService {
 		const queryBuilder = this.orderRepository
 			.createQueryBuilder('order')
 			.leftJoin('order.topic', 'topic') // Chỉ join mà không lấy tất cả trường
-			.addSelect(['topic.id', 'topic.code', 'topic.note'])
+			// .addSelect(['topic.id', 'topic.code', 'topic.note'])
 			.orderBy('order.dateUpdated', 'DESC')
 			.skip(skip)
 			.take(pageSize);
@@ -110,18 +129,21 @@ export class OrderService {
 		if (keyword) {
 			queryBuilder.andWhere(
 				new Brackets((qb) => {
-					qb.where('order.type LIKE :keyword', {
+					qb.where('order.content LIKE :keyword', {
 						keyword: `%${keyword}%`,
 					})
-						.orWhere('order.content LIKE :keyword', {
-							keyword: `%${keyword}%`,
-						})
-						.orWhere('order.note LIKE :keyword', {
+						.orWhere('order.code LIKE :keyword', {
 							keyword: `%${keyword}%`,
 						})
 						.orWhere('order.status LIKE :keyword', {
 							keyword: `%${keyword}%`,
-						});
+						})
+						.orWhere('order.type LIKE :keyword', {
+							keyword: `%${keyword}%`,
+						})
+						.orWhere('order.topic LIKE :keyword', {
+							keyword: `%${keyword}%`,
+						})
 				}),
 			);
 		}

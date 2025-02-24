@@ -23,6 +23,9 @@ export class Order extends BaseEntity {
 	@Column({ name: 'illustrative_image_id', nullable: true })
 	illustrativeImageId: string;
 
+	@Column({nullable: true}) // dev-test
+	code: string;
+
 	@Column({ nullable: true })
 	note: string;
 
@@ -46,8 +49,8 @@ export class Order extends BaseEntity {
 	})
 	type: TypeOrderProductEnum;
 
-	// @Column()
-	// topic_id: string;
+	@Column({name: 'topic_id'})
+	topicId: string;
 
 	@ManyToOne(() => Topic, (topic) => topic.orders, {})
 	@JoinColumn({ name: 'topic_id' })
