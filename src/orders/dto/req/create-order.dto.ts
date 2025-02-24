@@ -28,9 +28,9 @@ export class CreateOrderDto {
   illustrative_image_id?: string;
 
   // @IsNotEmpty()
-  @IsOptional()
-  @IsString()
-  code: string;
+  // @IsOptional()
+  // @IsString()
+  // code: string;
 
   @ApiPropertyOptional({
     description: 'Additional note for the order',

@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpErrorMessage } from 'src/common/dtos/response/error/enums/http.error.message.enum';
 import {
@@ -43,14 +43,6 @@ export class TopicService {
 			}
 		}
 
-		const topic: Partial<Topic> = {
-			code: payload.code,
-			description: payload.description,
-			note: payload.note,
-			order: payload.order,
-			parent: parent ?? undefined,
-		};
-
 		if (errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
@@ -60,13 +52,24 @@ export class TopicService {
 			);
 		}
 
+		const topic: Partial<Topic> = {
+			code: payload.code,
+			description: payload.description,
+			note: payload.note,
+			order: payload.order,
+			parent: parent ?? undefined,
+		};
+
 		const newTopic = this.topicRepository.create(topic);
 
 		return await this.topicRepository.save(newTopic);
 	}
 
 	async getTopicById(id: string): Promise<Topic> {
-		const topic = await this.topicRepository.findOne({ where: { id } });
+		const topic = await this.topicRepository.findOne({ 
+			where: { id },
+			relations: ['parent'],
+		});
 		if (!topic) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
@@ -80,7 +83,9 @@ export class TopicService {
 	}
 
 	async finAll(): Promise<Topic[]> {
-		const trees = await this.topicRepository.findTrees();
+		const trees = await this.topicRepository.findTrees({
+			relations: ['parent']
+		});
 		// return trees
 		const sortTree = (nodes: Topic[]): void => {
 			nodes.sort((a, b) => a.order - b.order);

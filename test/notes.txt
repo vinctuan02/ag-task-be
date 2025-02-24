@@ -2,7 +2,12 @@ cấu hình lại message dạng object
 
 chỉ được thêm order vào topic con
 
-
+nếu đã có file thì ko đc xoá order
 
 ko được xoá topic nếu đã có quan hệ
 update topic -> sửa lại code 
+
+thêm trường parentId
+
+chặn sửa file nếu đã có người thực hiện
+

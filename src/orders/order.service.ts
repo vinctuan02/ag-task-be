@@ -1,4 +1,4 @@
-import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MetadataDto } from 'src/common/dtos/response/pagination/metadata.dto';
 // import { PageResponse } from 'src/common/dtos/response/pagination/page-response.dto';
@@ -37,7 +37,7 @@ export class OrderService {
 		createOrderDto: CreateOrderDto,
 		userId: string,
 	): Promise<Order> {
-		const { topicId, type, code } = createOrderDto;
+		const { topicId, type } = createOrderDto;
 
 		const errors: ErrorDetail[] = [];
 
@@ -46,29 +46,20 @@ export class OrderService {
 			errors.push(new ErrorDetail('userId', 'message.userNotFound'));
 		}
 
-		// const topicById = await this.topicService.getTopicById(topicId)
-
-		// const isTopicExistsById =
-		// 	await this.topicService.checkExistsById(topicId);
-
-		// if(!code) {
-		// 	code = 
-		// }
-
+		// codeOrder
+		let codeOrder: string = '';
 		try {
 			const topicById = await this.topicService.getTopicById(topicId);
+
+			
+
+			const codeTopic = topicById.code;
+
+			codeOrder = await this.generateCodeOrder(codeTopic);
 			
 		} catch (error) {
 			errors.push(new ErrorDetail('topicId', 'message.topicNotFound'));
-		}
-
-		const newOrder = this.orderRepository.create({
-			...createOrderDto,
-			userCreatorId: userId,
-			topic: { id: topicId } as Topic,
-		});
-
-		// 
+		} 
 
 		if (errors.length > 0) {
 			throw new ErrorResDto(
@@ -78,6 +69,13 @@ export class OrderService {
 				errors,
 			);
 		}
+
+		const newOrder = this.orderRepository.create({
+			...createOrderDto,
+			code: codeOrder,
+			userCreatorId: userId,
+			topic: { id: topicId } as Topic,
+		});
 
 		const savedOrder = await this.orderRepository.save(newOrder);
 
@@ -235,6 +233,8 @@ export class OrderService {
 	async remove(id: string): Promise<boolean> {
 		const order = await this.orderRepository.findOne({ where: { id } });
 
+		// if(order?.status.)
+
 		if (!order) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
@@ -255,4 +255,30 @@ export class OrderService {
 	async checkIsExistsById(id: string): Promise<boolean> {
 		return await this.orderRepository.existsBy({ id });
 	}
+
+	// async getCodeOrderMax(codeTopic: string){
+		
+		
+	// }
+
+	async generateCodeOrder(codeTopic: string): Promise<string> {
+		const result = await this.orderRepository
+		  .createQueryBuilder('order')
+		  .select('order.code', 'orderCode')
+		  .where('order.code like :prefix', { prefix: `${codeTopic}_%` })
+		  .orderBy('order.code', 'DESC')
+		  .getRawOne<{ orderCode: string }>();
+	  
+		let newSuffix: number;
+		if (!result || !result.orderCode) {
+		  newSuffix = 1;
+		} else {
+		  const suffixStr = result.orderCode.substring(codeTopic.length + 1);
+		  const lastNumber = Number(suffixStr);
+		  newSuffix = lastNumber + 1;
+		}
+	  
+		return `${codeTopic}_${newSuffix}`;
+	}
+	  
 }

@@ -23,7 +23,7 @@ export class Order extends BaseEntity {
 	@Column({ name: 'illustrative_image_id', nullable: true })
 	illustrativeImageId: string;
 
-	@Column({nullable: true}) // dev-test
+	@Column() 
 	code: string;
 
 	@Column({ nullable: true })
@@ -36,7 +36,7 @@ export class Order extends BaseEntity {
 	userCreatorId: string;
 
 	@Column({
-		nullable: true,
+		// nullable: true,
 		type: 'enum',
 		enum: OrderStatus,
 		default: OrderStatus.NOT_RECEIVED,
