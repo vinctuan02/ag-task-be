@@ -65,7 +65,7 @@ export class OrderService {
 		const newOrder = this.orderRepository.create({
 			...createOrderDto,
 			userCreatorId: userId,
-			// topic: { id: topicId } as Topic,
+			topic: { id: topicId } as Topic,
 		});
 
 		// 
@@ -121,7 +121,7 @@ export class OrderService {
 		const queryBuilder = this.orderRepository
 			.createQueryBuilder('order')
 			.leftJoin('order.topic', 'topic') // Chỉ join mà không lấy tất cả trường
-			// .addSelect(['topic.id', 'topic.code', 'topic.note'])
+			.addSelect(['topic.id', 'topic.code', 'topic.note'])
 			.orderBy('order.dateUpdated', 'DESC')
 			.skip(skip)
 			.take(pageSize);
