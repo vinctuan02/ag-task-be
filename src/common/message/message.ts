@@ -21,6 +21,32 @@ export const Message = {
         },
     },
 
+    topic: {
+      create: {
+        success: 'message.createTopicSuccessfully',
+        failed: 'message.createTopicFailed',
+      },
+      find: {
+        byId: {
+          success: 'message.getTopicByIdSuccessfully',
+          failed: 'message.findTopicByIdFailed',
+        },
+      },
+      getAll: 'message.getAllTopicsSuccessfully',
+      update: {
+        success: 'message.updateTopicByIdSuccessfully',
+        failed: 'message.updateTopicFailed',
+      },
+      delete: {
+        success: 'message.deleteTopicByIdSuccessfully',
+        failed: 'message.deleteTopicByIdFailed',
+      },
+
+      orderExists: 'message.orderExists',
+      topicChildrenExists: 'message.topicChildrenExists',
+      topicIsRoot: 'message.topicIsRoot'
+  },
+
     order: {
         create: {
           success: 'message.createOrderSuccessfully',
@@ -30,6 +56,11 @@ export const Message = {
           byId: {
             success: 'message.getOrderByIdSuccessfully',
             failed: 'message.findOrderByIdFailed',
+          },
+
+          byTopicId: {
+            success: 'message.getOrderByTopicIdSuccessfully',
+            failed: 'message.findOrderByTopicIdFailed',
           },
         },
         getAll: 'message.getAllOrdersSuccessfully',
@@ -41,6 +72,8 @@ export const Message = {
           success: 'message.deleteOrderByIdSuccessfully',
           failed: 'message.deleteOrderByIdFailed',
         },
+
+        
     },
 
     orderProduct: {

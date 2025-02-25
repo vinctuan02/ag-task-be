@@ -12,7 +12,7 @@ import { OrderProductModule } from 'src/order-product/order-product.module';
 		TypeOrmModule.forFeature([Order]),
 		UsersModule,
 		forwardRef(() => OrderProductModule),
-		TopicModule,
+		forwardRef(() => TopicModule),
 		// forwardRef(() => FileModule),
 		// FileModule
 	],

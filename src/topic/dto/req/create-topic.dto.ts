@@ -46,7 +46,8 @@ export class CreateTopicDto {
 		type: Number,
 		example: 1,
 	})
-	@IsNotEmpty({ message: 'message.orderEmpty' })
+	// @IsNotEmpty({ message: 'message.orderEmpty' })
+	@IsOptional()
 	@IsNumber({}, { message: 'message.orderShouldBeNumber' })
 	order: number;
 }

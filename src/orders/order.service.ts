@@ -19,6 +19,7 @@ import { Order } from './entities/order.entity';
 import { TypeOrderProductEnum } from './enums/type-order.enum';
 import { OrderProductService } from 'src/order-product/order-product.service';
 import { CreateOrderProductDto } from 'src/order-product/dto/req/create-order-product.dto';
+import { Message } from 'src/common/message/message';
 
 @Injectable()
 export class OrderService {
@@ -26,6 +27,8 @@ export class OrderService {
 		@InjectRepository(Order)
 		private readonly orderRepository: Repository<Order>,
 		private readonly userService: UsersService,
+
+		@Inject(forwardRef(() => TopicService))
 		private readonly topicService: TopicService,
 
 		@Inject(forwardRef(() => OrderProductService))
@@ -46,12 +49,16 @@ export class OrderService {
 			errors.push(new ErrorDetail('userId', 'message.userNotFound'));
 		}
 
-		// codeOrder
+
+
+		// codeOrder // check topic root
 		let codeOrder: string = '';
 		try {
 			const topicById = await this.topicService.getTopicById(topicId);
 
-			
+			if(!topicById.parent) {
+				errors.push(new ErrorDetail('topicId', Message.topic.topicIsRoot));
+			}
 
 			const codeTopic = topicById.code;
 
@@ -256,6 +263,14 @@ export class OrderService {
 		return await this.orderRepository.existsBy({ id });
 	}
 
+	async checkOrderExistsByTopicId(topicId: string): Promise<boolean> {
+		const order = await this.orderRepository.findOne({
+		  where: { topic: { id: topicId } },
+		});
+		return !!order;
+	}
+	
+
 	// async getCodeOrderMax(codeTopic: string){
 		
 		
@@ -281,4 +296,30 @@ export class OrderService {
 		return `${codeTopic}_${newSuffix}`;
 	}
 	  
+	async findOrderByTopicId(topicId) {
+		const topic = await this.orderRepository.findOne({where: {topic: topicId}})
+
+		if (!topic) {
+			throw new ErrorResDto(
+				HttpStatus.BAD_REQUEST,
+				Message.order.find.byTopicId.failed,
+				HttpErrorMessage.BAD_REQUEST,
+				[new ErrorDetail('topicId', Message.order.find.byTopicId.failed)],
+			);
+		}
+
+		return topic
+	}
+
+	async updateCodeOrder(topicId: string, oldTopicCode: string, newTopicCode: string): Promise<void> {
+		const orders = await this.orderRepository.find({ where: { topic: { id: topicId } } });
+	  
+		orders.forEach((order) => {
+		  // Lấy phần hậu tố của order.code sau khi bỏ đi oldTopicCode
+		  const suffix = order.code.substring(oldTopicCode.length);
+		  order.code = `${newTopicCode}${suffix}`;
+		});
+	  
+		await this.orderRepository.save(orders);
+	}
 }

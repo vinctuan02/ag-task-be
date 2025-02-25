@@ -1,13 +1,19 @@
 cấu hình lại message dạng object
 
-chỉ được thêm order vào topic con
+option trường order -- oke
+
+chỉ được thêm order vào topic con -- oke
 
 nếu đã có file thì ko đc xoá order
 
-ko được xoá topic nếu đã có quan hệ
-update topic -> sửa lại code 
+ko được xoá topic nếu đã có quan hệ -- oke
+update topic -> sửa lại code -> oke
 
-thêm trường parentId
+thêm trường parentId -- oke
 
 chặn sửa file nếu đã có người thực hiện
 
+dựa vào 2 api 
+{{base_url}}/user-public
+{{base_url}}/user-public/38306fb4-3e40-4dc1-9411-6b4e17b59d12
+viết 2 api get users, get details, gửi kèm public key

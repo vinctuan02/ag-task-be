@@ -33,7 +33,7 @@ export class Topic extends BaseEntity {
 	@Column({ nullable: true })
 	note: string;
 
-	@Column()
+	@Column({default: 1})
 	order: number;
 
 	@OneToMany(() => Order, (order) => order.topic)

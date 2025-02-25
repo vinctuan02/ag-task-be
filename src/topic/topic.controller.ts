@@ -58,7 +58,7 @@ export class TopicController {
 		type: SuccessResDto,
 	})
 	async findAll() {
-		const allTopics = await this.topicService.finAll();
+		const allTopics = await this.topicService.findAll();
 		return new SuccessResDto(
 			200,
 			'message.getAllTopicSuccessfully',
@@ -86,17 +86,17 @@ export class TopicController {
 		return new SuccessResDto(200, 'Update topic oke', topic);
 	}
 
-	@Delete('clear')
-	@ApiOperation({ summary: 'Delete all topics' })
-	@ApiResponse({
-		status: 200,
-		description: 'All topics deleted successfully',
-		type: SuccessResDto,
-	})
-	async deleteAllTopics(): Promise<SuccessResDto<null>> {
-		await this.topicService.deleteAllTopics();
-		return new SuccessResDto(204, 'All topics deleted successfully');
-	}
+	// @Delete('clear')
+	// @ApiOperation({ summary: 'Delete all topics' })
+	// @ApiResponse({
+	// 	status: 200,
+	// 	description: 'All topics deleted successfully',
+	// 	type: SuccessResDto,
+	// })
+	// async deleteAllTopics(): Promise<SuccessResDto<null>> {
+	// 	await this.topicService.deleteAllTopics();
+	// 	return new SuccessResDto(204, 'All topics deleted successfully');
+	// }
 
 	@Delete(':id')
 	async deleteTopic(@Param('id') id: string): Promise<SuccessResDto<null>> {

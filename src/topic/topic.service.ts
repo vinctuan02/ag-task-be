@@ -1,4 +1,4 @@
-import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpErrorMessage } from 'src/common/dtos/response/error/enums/http.error.message.enum';
 import {
@@ -10,12 +10,17 @@ import { CreateTopicDto } from './dto/req/create-topic.dto';
 import { UpdateTopicDto } from './dto/req/update-topic.dto';
 import { UpdateTopicsPositionDto } from './dto/req/update-topics-position.dto';
 import { Topic } from './entities/topic.entity';
+import { OrderService } from 'src/orders/order.service';
+import { Message } from 'src/common/message/message';
 
 @Injectable()
 export class TopicService {
 	constructor(
 		@InjectRepository(Topic)
 		private readonly topicRepository: TreeRepository<Topic>,
+
+		@Inject(forwardRef(() => OrderService))
+		private readonly orderService: OrderService
 	) {}
 
 	async create(payload: CreateTopicDto): Promise<Topic> {
@@ -82,7 +87,7 @@ export class TopicService {
 		return await this.topicRepository.findDescendantsTree(topic);
 	}
 
-	async finAll(): Promise<Topic[]> {
+	async findAll(): Promise<Topic[]> {
 		const trees = await this.topicRepository.findTrees({
 			relations: ['parent']
 		});
@@ -183,35 +188,69 @@ export class TopicService {
 			);
 		}
 
+		const oldTopicCode = topicById.code
+
 		topicById.code = payload.code ?? topicById.code;
 		topicById.description = payload.description ?? topicById.description;
 		topicById.note = payload.note ?? topicById.note;
 		topicById.order = payload.order ?? topicById.order;
 		topicById.parent = parent ?? topicById.parent;
 
+		if(payload.code){
+			await this.orderService.updateCodeOrder(topicById.id, oldTopicCode, payload.code)
+		}
+
 		return await this.topicRepository.save(topicById);
 	}
 
 	async deleteByTopicById(id: string) {
-		const topic = await this.topicRepository.findOne({ where: { id } });
+		const topic = await this.topicRepository.findOne({ 
+			where: { id }, 
+			relations: ['children'] 
+		});
+		const errors: ErrorDetail[] = [];
+
 		if (!topic) {
-			throw new NotFoundException('Topic not found');
+			throw new ErrorResDto(
+				HttpStatus.BAD_REQUEST,
+				Message.topic.delete.failed,
+				HttpErrorMessage.BAD_REQUEST,
+				[new ErrorDetail('topicId', Message.topic.find.byId.failed)]
+			);
+		}
+
+		if(topic.children && topic.children.length > 0) {
+			errors.push(new ErrorDetail('topicId', Message.topic.topicChildrenExists))
+		}
+
+		const isOrderExist = await this.orderService.checkOrderExistsByTopicId(topic.id)
+		if(isOrderExist) {
+				errors.push(new ErrorDetail('topicId', Message.topic.orderExists))
+		}
+
+		if(errors.length > 0) {
+			throw new ErrorResDto(
+				HttpStatus.BAD_REQUEST,
+				Message.topic.delete.failed,
+				HttpErrorMessage.BAD_REQUEST,
+				errors
+			)
 		}
 
 		const descendants = await this.topicRepository.findDescendants(topic);
 		await this.topicRepository.remove(descendants);
 	}
 
-	async deleteAllTopics(): Promise<void> {
-		// Tắt kiểm tra khóa ngoại
-		await this.topicRepository.query('SET FOREIGN_KEY_CHECKS=0');
-		// Xoá tất cả dữ liệu trong bảng closure
-		await this.topicRepository.query('DELETE FROM topics_closure');
-		// Xoá tất cả dữ liệu trong bảng topics
-		await this.topicRepository.query('DELETE FROM topics');
-		// Bật lại kiểm tra khóa ngoại
-		await this.topicRepository.query('SET FOREIGN_KEY_CHECKS=1');
-	}
+	// async deleteAllTopics(): Promise<void> {
+	// 	// Tắt kiểm tra khóa ngoại
+	// 	await this.topicRepository.query('SET FOREIGN_KEY_CHECKS=0');
+	// 	// Xoá tất cả dữ liệu trong bảng closure
+	// 	await this.topicRepository.query('DELETE FROM topics_closure');
+	// 	// Xoá tất cả dữ liệu trong bảng topics
+	// 	await this.topicRepository.query('DELETE FROM topics');
+	// 	// Bật lại kiểm tra khóa ngoại
+	// 	await this.topicRepository.query('SET FOREIGN_KEY_CHECKS=1');
+	// }
 
 	async checkExistsById(id: string): Promise<boolean> {
 		return await this.topicRepository.existsBy({ id });
