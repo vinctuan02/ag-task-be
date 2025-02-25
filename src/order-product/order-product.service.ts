@@ -189,4 +189,8 @@ export class OrderProductService {
 
 		return true;
 	}
+
+	async deleteManyOrderProductById (ids: string[]) {
+		await this.orderProductRepository.delete(ids);
+	}
 }

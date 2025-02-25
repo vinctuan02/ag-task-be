@@ -36,6 +36,7 @@ export class OrderService {
 		// private readonly fileService: FileService,
 	) {}
 
+
 	async create(
 		createOrderDto: CreateOrderDto,
 		userId: string,
@@ -48,8 +49,6 @@ export class OrderService {
 		if (!isUserExistsById) {
 			errors.push(new ErrorDetail('userId', 'message.userNotFound'));
 		}
-
-
 
 		// codeOrder // check topic root
 		let codeOrder: string = '';
@@ -86,18 +85,21 @@ export class OrderService {
 
 		const savedOrder = await this.orderRepository.save(newOrder);
 
-		// fix
+		this.createOrderProducts(savedOrder, type)
+
+		return savedOrder;
+	}
+
+	async createOrderProducts (savedOrder: Order, type: TypeOrderProductEnum){
 		if(type=== TypeOrderProductEnum.VIDEO) { 
 			// api tao order-product 
 
 			const createOrderProductThumbnailDto: CreateOrderProductDto = {
-					note: savedOrder.note,
 					type: TypeOrderProductEnum.IMAGE,
 					orderId: savedOrder.id
 			}
 
 			const createOrderProductVideoDto: CreateOrderProductDto = {
-				note: savedOrder.note,
 				type: TypeOrderProductEnum.VIDEO,
 				orderId: savedOrder.id
 			}
@@ -106,30 +108,37 @@ export class OrderService {
 			await this.orderProductService.create(createOrderProductVideoDto)
 		}else {
 			const createOrderProductDto: CreateOrderProductDto = {
-				note: savedOrder.note,
 				type: savedOrder.type,
 				orderId: savedOrder.id
 			}
 
 			await this.orderProductService.create(createOrderProductDto)
 		}
-
-		return savedOrder;
 	}
 
 	async findAll(
 		currentPage: number,
 		pageSize: number,
 		keyword?: string,
+		type?: TypeOrderProductEnum,
+		deadline?: Date
 	): Promise<DataPagination<Order | null>> {
 		const skip = (currentPage - 1) * pageSize;
 		const queryBuilder = this.orderRepository
 			.createQueryBuilder('order')
-			.leftJoin('order.topic', 'topic') // Chỉ join mà không lấy tất cả trường
+			.leftJoin('order.topic', 'topic')
 			.addSelect(['topic.id', 'topic.code', 'topic.note'])
 			.orderBy('order.dateUpdated', 'DESC')
 			.skip(skip)
 			.take(pageSize);
+
+		if (type) {
+			queryBuilder.andWhere('order.type = :type', { type });
+		}
+
+		if (deadline) {
+			queryBuilder.andWhere('order.deadline = :deadline', { deadline });
+		}
 
 		if (keyword) {
 			queryBuilder.andWhere(
@@ -143,9 +152,6 @@ export class OrderService {
 						.orWhere('order.status LIKE :keyword', {
 							keyword: `%${keyword}%`,
 						})
-						.orWhere('order.type LIKE :keyword', {
-							keyword: `%${keyword}%`,
-						})
 						.orWhere('order.topic LIKE :keyword', {
 							keyword: `%${keyword}%`,
 						})
@@ -154,21 +160,6 @@ export class OrderService {
 		}
 
 		const [orders, totalItems] = await queryBuilder.getManyAndCount();
-
-		// Chuyển đổi từng order sang OrderDto và thêm resourceUrl
-		// const ordersWithResourceUrl: OrderDto[] = await Promise.all(
-		// 	orders.map(async (order) => {
-		// 		const orderDto = plainToInstance(OrderDto, order);
-		// 		if (order.gcsFilesId) {
-		// 			const resGetDownloadUrl =
-		// 				await this.fileService.getDownloadUrlById(
-		// 					order.gcsFilesId,
-		// 				);
-		// 			orderDto.resourceUrl = resGetDownloadUrl.url;
-		// 		}
-		// 		return orderDto;
-		// 	}),
-		// );
 
 		const totalPages = Math.ceil(totalItems / pageSize);
 		const metadata = new MetadataDto(
@@ -181,13 +172,14 @@ export class OrderService {
 		return new DataPagination(orders, metadata);
 	}
 
-	// async isOrderExist(id: string): Promise<boolean> {
-	// 	const count = await this.orderRepository.count({ where: { id } });
-	// 	return count > 0;
-	// }
-
 	async findOne(id: string): Promise<Order> {
-		const orderById = await this.orderRepository.findOne({ where: { id } });
+		const orderById = await this.orderRepository
+							.createQueryBuilder('order')
+							.leftJoin('order.orderProduct', 'orderProduct')
+							.addSelect(['orderProduct.id', 'orderProduct.assigneeId','orderProduct.type'])
+							.where('order.id = :id', {id})
+							.getOne()
+
 		if (!orderById) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
@@ -204,23 +196,55 @@ export class OrderService {
 		id: string,
 		updateOrderDto: Partial<UpdateOrderDto>,
 	): Promise<Order> {
-		const { topicId } = updateOrderDto;
-
+		const { topicId, type } = updateOrderDto;
+		
 		const errors: ErrorDetail[] = [];
 
-		const order = await this.orderRepository.findOne({ where: { id } });
+		// const order = await this.orderRepository.findOne({ where: { id } });
+
+		const order = await this.orderRepository
+			.createQueryBuilder('order')
+			.leftJoin('order.orderProduct', 'orderProduct')
+			.addSelect(['orderProduct.id', 'orderProduct.assigneeId'])
+			.where('order.id = :id', { id })
+			.getOne();
+
 		if (!order) {
 			errors.push(new ErrorDetail('orderId', 'message.orderNotFound'));
 		}
 
-		if (topicId) {
-			const isTopicExistsById =
-				await this.topicService.checkExistsById(topicId);
-			if (!isTopicExistsById) {
-				errors.push(
-					new ErrorDetail('topicId', 'message.topicNotFound'),
-				);
+		if(type && type !== order?.type){
+
+			if(type !== order?.type){
+				console.log("dsasdga")
+				const orderProducts = order?.orderProduct;
+				orderProducts?.map((orderProduct) => {
+					if(orderProduct.assigneeId) {
+						errors.push(new ErrorDetail('assigneeId', 'message.assigneeIdExists'));
+						return
+					}
+				})
 			}
+			
+		}
+
+		// if(order?.userCreatorId)
+		let codeOrder: string = '';
+		if (topicId) {
+			try {
+				const topicById = await this.topicService.getTopicById(topicId);
+	
+				if(!topicById.parent) {
+					errors.push(new ErrorDetail('topicId', Message.topic.topicIsRoot));
+				}
+
+				const codeTopic = topicById.code;
+
+				codeOrder = await this.generateCodeOrder(codeTopic);
+
+			} catch (error) {
+				errors.push(new ErrorDetail('topicId', 'message.topicNotFound'));
+			} 
 		}
 
 		if (errors.length > 0 || !order) {
@@ -232,9 +256,27 @@ export class OrderService {
 			);
 		}
 
-		Object.assign(order, updateOrderDto);
+		const oldType = order.type
 
-		return await this.orderRepository.save(order);
+		Object.assign(order, updateOrderDto);
+		order.code = codeOrder;
+
+		const savedOrder = await this.orderRepository.save(order);
+
+		// xoa order product, tao lai
+		if(type && type !== oldType) {
+			const orderProducts = order?.orderProduct;
+			const orderProductIds: string[] = []
+			orderProducts.forEach((orderProduct) => {
+				orderProductIds.push(orderProduct.id)
+			})
+
+			await this.orderProductService.deleteManyOrderProductById(orderProductIds)
+
+			await this.createOrderProducts(savedOrder, type)
+		}
+
+		return await this.findOne(savedOrder.id)
 	}
 
 	async remove(id: string): Promise<boolean> {
@@ -269,12 +311,21 @@ export class OrderService {
 		});
 		return !!order;
 	}
-	
+ 
+	async findOrderByTopicId(topicId) {
+		const topic = await this.orderRepository.findOne({where: {topic: topicId}})
 
-	// async getCodeOrderMax(codeTopic: string){
-		
-		
-	// }
+		if (!topic) {
+			throw new ErrorResDto(
+				HttpStatus.BAD_REQUEST,
+				Message.order.find.byTopicId.failed,
+				HttpErrorMessage.BAD_REQUEST,
+				[new ErrorDetail('topicId', Message.order.find.byTopicId.failed)],
+			);
+		}
+
+		return topic
+	}
 
 	async generateCodeOrder(codeTopic: string): Promise<string> {
 		const result = await this.orderRepository
@@ -295,21 +346,6 @@ export class OrderService {
 	  
 		return `${codeTopic}_${newSuffix}`;
 	}
-	  
-	async findOrderByTopicId(topicId) {
-		const topic = await this.orderRepository.findOne({where: {topic: topicId}})
-
-		if (!topic) {
-			throw new ErrorResDto(
-				HttpStatus.BAD_REQUEST,
-				Message.order.find.byTopicId.failed,
-				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('topicId', Message.order.find.byTopicId.failed)],
-			);
-		}
-
-		return topic
-	}
 
 	async updateCodeOrder(topicId: string, oldTopicCode: string, newTopicCode: string): Promise<void> {
 		const orders = await this.orderRepository.find({ where: { topic: { id: topicId } } });
@@ -322,4 +358,6 @@ export class OrderService {
 	  
 		await this.orderRepository.save(orders);
 	}
+
+	
 }

@@ -16,6 +16,7 @@ import { CreateOrderDto } from './dto/req/create-order.dto';
 import { UpdateOrderDto } from './dto/req/update-order.dto';
 import { Order } from './entities/order.entity';
 import { OrderService } from './order.service';
+import { GetAllOrdersDto } from './dto/req/get-all-order.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -40,12 +41,14 @@ export class OrderController {
 	@ApiOperation({ summary: 'Get all orders' })
 	@Get()
 	async findAll(
-		@Query() query: FindAllDto,
+		@Query() query: GetAllOrdersDto,
 	): Promise<SuccessResDto<DataPagination<Order | null>>> {
 		const result = await this.orderService.findAll(
 			query.page ?? 1,
 			query.pageSize ?? 10,
 			query?.keyword,
+			query?.type,
+			query?.deadline
 		);
 		return new SuccessResDto(
 			200,
