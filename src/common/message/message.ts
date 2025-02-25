@@ -1,100 +1,70 @@
+
+
 export const Message = {
-    user: {
-        create: {
-          success: 'message.createUserSuccessfully',
-          failed: 'message.createUserFailed',
-        },
-        find: {
-          byId: {
-            success: 'message.getUserByIdSuccessfully',
-            failed: 'message.findUserByIdFailed',
-          },
-        },
-        getAll: 'message.getAllUsersSuccessfully',
-        update: {
-          success: 'message.updateUserByIdSuccessfully',
-          failed: 'message.updateUserFailed',
-        },
-        delete: {
-          success: 'message.deleteUserByIdSuccessfully',
-          failed: 'message.deleteUserByIdFailed',
-        },
-    },
+  // user
+  userNotFound: 'user.message.userNotFound',
+  createUserSuccessfully: 'user.message.createUserSuccessfully',
+  createUserFailed: 'user.message.createUserFailed',
+  emailAlreadyExists: 'user.message.emailAlreadyExists',
 
-    topic: {
-      create: {
-        success: 'message.createTopicSuccessfully',
-        failed: 'message.createTopicFailed',
-      },
-      find: {
-        byId: {
-          success: 'message.getTopicByIdSuccessfully',
-          failed: 'message.findTopicByIdFailed',
-        },
-      },
-      getAll: 'message.getAllTopicsSuccessfully',
-      update: {
-        success: 'message.updateTopicByIdSuccessfully',
-        failed: 'message.updateTopicFailed',
-      },
-      delete: {
-        success: 'message.deleteTopicByIdSuccessfully',
-        failed: 'message.deleteTopicByIdFailed',
-      },
+  getUserByIdSuccessfully: 'user.message.getUserByIdSuccessfully',
+  getUserByIdFailed: 'user.message.getUserByIdFailed',
+  getAllUserSuccessfully: 'user.message.getAllUserSuccessfully',
+  getAllUserFailed: 'user.message.getAllUserFailed',
+  updateUserSucessfully: 'user.message.updateUserSucessfully',
+  updateUserFailed: 'user.message.updateUserFailed',
+  deleteUserSucessfully: 'user.message.deleteUserSucessfully',
+  deleteUserFailed: 'user.message.deleteUserFailed',
 
-      orderExists: 'message.orderExists',
-      topicChildrenExists: 'message.topicChildrenExists',
-      topicIsRoot: 'message.topicIsRoot'
-  },
+  // order
+  orderNotFound: 'order.message.orderNotFound',
+  createOrderSuccessfully: 'order.message.createOrderSuccessfully',
+  createOrderFailed: 'order.message.createOrderFailed',
+  getOrderByIdSuccessfully: 'order.message.getOrderByIdSuccessfully',
+  getOrderByIdFailed: 'order.message.getOrderByIdFailed',
+  getAllOrdersSuccessfully: 'order.message.getAllOrdersSuccessfully',
+  getAllOrdersFailed: 'order.message.getAllOrdersFailed',
+  updateOrderSuccessfully: 'order.message.updateOrderSuccessfully',
+  updateOrderFailed: 'order.message.updateOrderFailed',
+  deleteOrderSuccessfully: 'order.message.deleteOrderSuccessfully',
+  deleteOrderFailed: 'order.message.deleteOrderFailed',
 
-    order: {
-        create: {
-          success: 'message.createOrderSuccessfully',
-          failed: 'message.createOrderFailed',
-        },
-        find: {
-          byId: {
-            success: 'message.getOrderByIdSuccessfully',
-            failed: 'message.findOrderByIdFailed',
-          },
+  // nghiep vu
+  assigneeIdExists: 'order.message.assigneeIdExists',
 
-          byTopicId: {
-            success: 'message.getOrderByTopicIdSuccessfully',
-            failed: 'message.findOrderByTopicIdFailed',
-          },
-        },
-        getAll: 'message.getAllOrdersSuccessfully',
-        update: {
-          success: 'message.updateOrderByIdSuccessfully',
-          failed: 'message.updateOrderFailed',
-        },
-        delete: {
-          success: 'message.deleteOrderByIdSuccessfully',
-          failed: 'message.deleteOrderByIdFailed',
-        },
+  // topic
+  topicNotFound: 'topic.message.topicNotFound',
+  createTopicSuccessfully: 'topic.message.createTopicSuccessfully',
+  createTopicFailed: 'topic.message.createTopicFailed',
+  getTopicByIdSuccessfully: 'topic.message.getTopicByIdSuccessfully',
+  getTopicByIdFailed: 'topic.message.getTopicByIdFailed',
+  getAllTopicsSuccessfully: 'topic.message.getAllTopicsSuccessfully',
+  getAllTopicsFailed: 'topic.message.getAllTopicsFailed',
+  updateTopicSuccessfully: 'topic.message.updateTopicSuccessfully',
+  updateTopicFailed: 'topic.message.updateTopicFailed',
 
-        
-    },
+  updateTopicsPositionSuccessfully: 'topic.message.updateTopicsPositionSuccessfully',
 
-    orderProduct: {
-        create: {
-          success: 'message.createOrderProductSuccessfully',
-          failed: 'message.createOrderProductFailed',
-        },
-        find: {
-          byId: {
-            success: 'message.getOrderProductByIdSuccessfully',
-            failed: 'message.findOrderProductByIdFailed',
-          },
-        },
-        getAll: 'message.getAllOrderProductsSuccessfully',
-        update: {
-          success: 'message.updateOrderProductByIdSuccessfully',
-          failed: 'message.updateOrderProductFailed',
-        },
-        delete: {
-          success: 'message.deleteOrderProductByIdSuccessfully',
-          failed: 'message.deleteOrderProductByIdFailed',
-        },
-    },
+  deleteTopicSuccessfully: 'topic.message.deleteTopicSuccessfully',
+  deleteTopicFailed: 'topic.message.deleteTopicFailed',
+
+  topicIsExists: 'topic.message.topicIsExists',
+  parentTopicNotFound: 'topic.message.parentTopicNotFound',
+  topicChildrenExists: 'topic.message.topicChildrenExists',
+  topicIsRoot: 'topic.message.topicIsRoot',
+  orderExists: 'topic.message.orderExists',
+
+  // product order
+  orderProductNotFound: 'OrderProduct.message.OrderProductNotFound',
+  createOrderProductSuccessfully: 'OrderProduct.message.createOrderProductSuccessfully',
+  createOrderProductFailed: 'OrderProduct.message.createOrderProductFailed',
+  getOrderProductByIdSuccessfully: 'OrderProduct.message.getOrderProductByIdSuccessfully',
+  getOrderProductByIdFailed: 'OrderProduct.message.getOrderProductByIdFailed',
+  getAllOrderProductsSuccessfully: 'OrderProduct.message.getAllOrderProductsSuccessfully',
+  getAllOrderProductsFailed: 'OrderProduct.message.getAllOrderProductsFailed',
+  updateOrderProductSuccessfully: 'OrderProduct.message.updateOrderProductSuccessfully',
+  updateOrderProductFailed: 'OrderProduct.message.updateOrderProductFailed',
+  deleteOrderProductSuccessfully: 'OrderProduct.message.deleteOrderProductSuccessfully',
+  deleteOrderProductFailed: 'OrderProduct.message.deleteOrderProductFailed',
+ 
 }

@@ -14,6 +14,7 @@ import { UpdateTopicDto } from './dto/req/update-topic.dto';
 import { UpdateTopicsPositionDto } from './dto/req/update-topics-position.dto';
 import { Topic } from './entities/topic.entity';
 import { TopicService } from './topic.service';
+import { Message } from 'src/common/message/message';
 
 @ApiTags('Topics')
 @Controller('topics')
@@ -31,7 +32,7 @@ export class TopicController {
 		@Body() createTopicDto: CreateTopicDto,
 	): Promise<SuccessResDto<Topic>> {
 		const topic = await this.topicService.create(createTopicDto);
-		return new SuccessResDto(200, 'message.createTopicSuccessfully', topic);
+		return new SuccessResDto(200, Message.createTopicSuccessfully, topic);
 	}
 
 	@Get(':id')
@@ -45,7 +46,7 @@ export class TopicController {
 		const topic = await this.topicService.getTopicById(id);
 		return new SuccessResDto(
 			200,
-			'message.getTopicByIdSuccessfully',
+			Message.getTopicByIdSuccessfully,
 			topic,
 		);
 	}
@@ -61,7 +62,7 @@ export class TopicController {
 		const allTopics = await this.topicService.findAll();
 		return new SuccessResDto(
 			200,
-			'message.getAllTopicSuccessfully',
+			Message.getAllTopicsSuccessfully,
 			allTopics,
 		);
 	}
@@ -73,7 +74,7 @@ export class TopicController {
 		await this.topicService.updateTopicsPosition(updateTopicsPositionDto);
 		return new SuccessResDto(
 			200,
-			'message.updateTopicsPositionSuccessfully',
+			Message.updateTopicsPositionSuccessfully,
 		);
 	}
 
@@ -83,7 +84,7 @@ export class TopicController {
 		@Body() updateTopicDto: UpdateTopicDto,
 	): Promise<SuccessResDto<Topic>> {
 		const topic = await this.topicService.update(id, updateTopicDto);
-		return new SuccessResDto(200, 'Update topic oke', topic);
+		return new SuccessResDto(200, Message.updateTopicSuccessfully, topic);
 	}
 
 	// @Delete('clear')
@@ -101,6 +102,6 @@ export class TopicController {
 	@Delete(':id')
 	async deleteTopic(@Param('id') id: string): Promise<SuccessResDto<null>> {
 		await this.topicService.deleteByTopicById(id);
-		return new SuccessResDto(204, 'message.deleteTopicSucessfully');
+		return new SuccessResDto(204, Message.deleteTopicSuccessfully);
 	}
 }

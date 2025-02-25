@@ -33,13 +33,13 @@ export class OrderProductService {
 			await this.orderService.checkIsExistsById(orderId);
 
 		if (!isOrderExistsById) {
-			errors.push(new ErrorDetail('orderId', Message.orderProduct.find.byId.failed));
+			errors.push(new ErrorDetail('orderId', Message.getOrderProductByIdFailed));
 		}
 
 		if (errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				Message.orderProduct.create.failed,
+				Message.createOrderProductFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -97,9 +97,9 @@ export class OrderProductService {
 		if (!orderProductById) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				Message.orderProduct.find.byId.failed,
+				Message.getOrderProductByIdFailed,
 				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('orderId', Message.orderProduct.find.byId.failed)],
+				[new ErrorDetail('orderProductId', Message.orderProductNotFound)],
 			);
 		}
 
@@ -122,7 +122,7 @@ export class OrderProductService {
 			errors.push(
 				new ErrorDetail(
 					'orderProductId',
-					Message.orderProduct.find.byId.failed
+					Message.getOrderProductByIdFailed
 				),
 			);
 		}
@@ -132,7 +132,7 @@ export class OrderProductService {
 				await this.orderService.checkIsExistsById(orderId);
 			if (!isOrderExistsById) {
 				errors.push(
-					new ErrorDetail('orderId', Message.order.find.byId.failed),
+					new ErrorDetail('orderProductId', Message.getOrderProductByIdFailed),
 				);
 			}
 		}
@@ -141,7 +141,7 @@ export class OrderProductService {
 			const isUserExistsById =
 				await this.userService.checkExistsById(assigneeId);
 			if (!isUserExistsById) {
-				errors.push(new ErrorDetail('userId', Message.user.find.byId.failed));
+				errors.push(new ErrorDetail('userId', Message.getUserByIdFailed));
 			}
 		}
 
@@ -152,7 +152,7 @@ export class OrderProductService {
 		if (errors.length > 0 || !orderProductById) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				Message.orderProduct.update.failed,
+				Message.updateOrderProductFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -171,12 +171,12 @@ export class OrderProductService {
 		if (!orderProduct) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				Message.orderProduct.delete.failed,
+				Message.deleteOrderProductFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				[
 					new ErrorDetail(
 						'orderProductId',
-						Message.orderProduct.find.byId.failed
+						Message.getOrderProductByIdFailed
 					),
 				],
 			);

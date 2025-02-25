@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/req/create-user.dto';
 import { UserResDto } from './dtos/res/user-res.dto';
 import { User } from './entities/user.entity';
+import { Message } from 'src/common/message/message';
 
 @Injectable()
 export class UsersService {
@@ -25,13 +26,13 @@ export class UsersService {
 		const user = await this.userRepository.findOne({ where: { email } });
 
 		if (user) {
-			errors.push(new ErrorDetail('email', 'message.emailAlreadyExists'));
+			errors.push(new ErrorDetail('email', Message.emailAlreadyExists));
 		}
 
 		if (errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.createUserFailed',
+				Message.createUserFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);

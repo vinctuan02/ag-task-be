@@ -31,7 +31,7 @@ export class TopicService {
 
 		if (isExistByCode) {
 			errors.push(
-				new ErrorDetail('code', 'message.codeTopicAlreadyExists'),
+				new ErrorDetail('code', Message.topicIsExists),
 			);
 		}
 
@@ -43,7 +43,7 @@ export class TopicService {
 
 			if (!parent) {
 				errors.push(
-					new ErrorDetail('parentId', 'message.parentTopicNotFound'),
+					new ErrorDetail('parentId', Message.parentTopicNotFound),
 				);
 			}
 		}
@@ -51,7 +51,7 @@ export class TopicService {
 		if (errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.createTopicFailed',
+				Message.createTopicFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -78,9 +78,9 @@ export class TopicService {
 		if (!topic) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.getTopicByIdFailed',
+				Message.getTopicByIdFailed,
 				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('id', 'message.topicNotFound')],
+				[new ErrorDetail('id', Message.topicNotFound)],
 			);
 		}
 
@@ -150,7 +150,7 @@ export class TopicService {
 		const topicById = await this.topicRepository.findOne({ where: { id } });
 
 		if (!topicById) {
-			errors.push({ key: 'id', message: 'message.topicNotFound' });
+			errors.push({ key: 'id', message: Message.topicNotFound });
 		}
 
 		if (code && topicById?.code !== code) {
@@ -159,7 +159,7 @@ export class TopicService {
 			if (isExistByCode) {
 				errors.push({
 					key: 'code',
-					message: 'message.codeTopicAlreadyExists',
+					message: Message.topicIsExists,
 				});
 			}
 		}
@@ -174,7 +174,7 @@ export class TopicService {
 			if (!parent) {
 				errors.push({
 					key: 'parentId',
-					message: 'message.parentTopicNotFound',
+					message: Message.parentTopicNotFound,
 				});
 			}
 		}
@@ -182,7 +182,7 @@ export class TopicService {
 		if (errors.length > 0 || !topicById) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.updateTopicByIdFailed',
+				Message.updateTopicFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -213,25 +213,25 @@ export class TopicService {
 		if (!topic) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				Message.topic.delete.failed,
+				Message.deleteTopicFailed,
 				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('topicId', Message.topic.find.byId.failed)]
+				[new ErrorDetail('topicId', Message.getTopicByIdFailed)]
 			);
 		}
 
 		if(topic.children && topic.children.length > 0) {
-			errors.push(new ErrorDetail('topicId', Message.topic.topicChildrenExists))
+			errors.push(new ErrorDetail('topicId', Message.topicChildrenExists))
 		}
 
 		const isOrderExist = await this.orderService.checkOrderExistsByTopicId(topic.id)
 		if(isOrderExist) {
-				errors.push(new ErrorDetail('topicId', Message.topic.orderExists))
+				errors.push(new ErrorDetail('topicId', Message.orderExists))
 		}
 
 		if(errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				Message.topic.delete.failed,
+				Message.deleteTopicFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors
 			)

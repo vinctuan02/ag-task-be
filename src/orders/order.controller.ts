@@ -17,6 +17,7 @@ import { UpdateOrderDto } from './dto/req/update-order.dto';
 import { Order } from './entities/order.entity';
 import { OrderService } from './order.service';
 import { GetAllOrdersDto } from './dto/req/get-all-order.dto';
+import { Message } from 'src/common/message/message';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -33,7 +34,7 @@ export class OrderController {
 		const result = await this.orderService.create(createOrderDto, userId);
 		return new SuccessResDto(
 			201,
-			'message.createOrderSuccessfully',
+			Message.createOrderSuccessfully,
 			result,
 		);
 	}
@@ -52,7 +53,7 @@ export class OrderController {
 		);
 		return new SuccessResDto(
 			200,
-			'message.getAllOrdersSuccessfully',
+			Message.getAllOrdersSuccessfully,
 			result,
 		);
 	}
@@ -68,7 +69,7 @@ export class OrderController {
 		const result = await this.orderService.findOne(id);
 		return new SuccessResDto(
 			200,
-			'message.getOrderByIdSucessfully',
+			Message.getOrderByIdSuccessfully,
 			result,
 		);
 	}
@@ -87,7 +88,7 @@ export class OrderController {
 		const result = await this.orderService.update(id, updateOrderDto);
 		return new SuccessResDto(
 			200,
-			'message.updateOrderByIdSuccessfully',
+			Message.updateOrderSuccessfully,
 			result,
 		);
 	}
@@ -97,6 +98,6 @@ export class OrderController {
 	@Delete(':id')
 	async remove(@Param('id') id: string): Promise<SuccessResDto<boolean>> {
 		await this.orderService.remove(id);
-		return new SuccessResDto(204, 'message.deleteOrderByIdSuccessfully');
+		return new SuccessResDto(204, Message.deleteOrderSuccessfully);
 	}
 }

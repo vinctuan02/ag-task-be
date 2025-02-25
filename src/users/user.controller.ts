@@ -1,8 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { SuccessResDto } from 'src/common/dtos/response/success/success-reponse.dto';
 import { CreateUserDto } from './dtos/req/create-user.dto';
 import { UserResDto } from './dtos/res/user-res.dto';
 import { UsersService } from './user.service';
+import { Message } from 'src/common/message/message';
+import { FindAllDto } from 'src/common/dtos/request/find-all.dto';
+import { DataPagination } from 'src/common/dtos/response/pagination/data-pagination.dto';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -15,12 +19,11 @@ export class UsersController {
 		const newUser = await this.userService.createUser(createUserDto);
 		return new SuccessResDto(
 			200,
-			'message.createUserSuccessfully',
+			Message.createUserSuccessfully,
 			newUser,
 		);
 	}
 
-	// @ApiOperation({ summary: 'Get all users' })
 	// @Get()
 	// async findAll(
 	//     @Query() query: FindAllDto,

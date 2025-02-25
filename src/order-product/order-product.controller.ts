@@ -15,6 +15,7 @@ import { CreateOrderProductDto } from './dto/req/create-order-product.dto';
 import { UpdateOrderProductDto } from './dto/req/update-order-product.dto';
 import { OrderProduct } from './entities/order-product.entity';
 import { OrderProductService } from './order-product.service';
+import { Message } from 'src/common/message/message';
 
 @Controller('order-product')
 export class OrderProductController {
@@ -29,7 +30,7 @@ export class OrderProductController {
 		);
 		return new SuccessResDto(
 			200,
-			'message.createOrderProductSuccessfully',
+			Message.createOrderProductSuccessfully,
 			newOrderProduct,
 		);
 	}
@@ -45,7 +46,7 @@ export class OrderProductController {
 		);
 		return new SuccessResDto(
 			200,
-			'message.getAllOrderProductsSuccessfully',
+			Message.getAllOrderProductsSuccessfully,
 			result,
 		);
 	}
@@ -57,7 +58,7 @@ export class OrderProductController {
 		const result = await this.orderProductService.findOne(id);
 		return new SuccessResDto(
 			200,
-			'message.getOrderProductByIdSucessfully',
+			Message.getOrderProductByIdSuccessfully,
 			result,
 		);
 	}
@@ -73,7 +74,7 @@ export class OrderProductController {
 		);
 		return new SuccessResDto(
 			200,
-			'message.updateOrderProductByIdSuccessfully',
+			Message.updateOrderProductSuccessfully,
 			result,
 		);
 	}
@@ -81,6 +82,6 @@ export class OrderProductController {
 	@Delete(':id')
 	async remove(@Param('id') id: string): Promise<SuccessResDto<boolean>> {
 		await this.orderProductService.remove(id);
-		return new SuccessResDto(204, 'message.deleteOrderByIdSuccessfully');
+		return new SuccessResDto(204, Message.deleteOrderProductSuccessfully);
 	}
 }

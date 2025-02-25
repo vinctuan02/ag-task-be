@@ -47,7 +47,7 @@ export class OrderService {
 
 		const isUserExistsById = await this.userService.checkExistsById(userId);
 		if (!isUserExistsById) {
-			errors.push(new ErrorDetail('userId', 'message.userNotFound'));
+			errors.push(new ErrorDetail('userId', Message.userNotFound));
 		}
 
 		// codeOrder // check topic root
@@ -56,7 +56,7 @@ export class OrderService {
 			const topicById = await this.topicService.getTopicById(topicId);
 
 			if(!topicById.parent) {
-				errors.push(new ErrorDetail('topicId', Message.topic.topicIsRoot));
+				errors.push(new ErrorDetail('topicId', Message.topicIsRoot));
 			}
 
 			const codeTopic = topicById.code;
@@ -64,13 +64,13 @@ export class OrderService {
 			codeOrder = await this.generateCodeOrder(codeTopic);
 			
 		} catch (error) {
-			errors.push(new ErrorDetail('topicId', 'message.topicNotFound'));
+			errors.push(new ErrorDetail('topicId', Message.topicNotFound));
 		} 
 
 		if (errors.length > 0) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.createOrderFailed',
+				Message.createOrderFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -183,9 +183,9 @@ export class OrderService {
 		if (!orderById) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.findOrderByIdFailed',
+				Message.getOrderByIdFailed,
 				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('orderId', 'message.orderNotFound')],
+				[new ErrorDetail('orderId', Message.orderNotFound)],
 			);
 		}
 
@@ -210,17 +210,15 @@ export class OrderService {
 			.getOne();
 
 		if (!order) {
-			errors.push(new ErrorDetail('orderId', 'message.orderNotFound'));
+			errors.push(new ErrorDetail('orderId', Message.orderNotFound));
 		}
 
 		if(type && type !== order?.type){
-
 			if(type !== order?.type){
-				console.log("dsasdga")
 				const orderProducts = order?.orderProduct;
 				orderProducts?.map((orderProduct) => {
 					if(orderProduct.assigneeId) {
-						errors.push(new ErrorDetail('assigneeId', 'message.assigneeIdExists'));
+						errors.push(new ErrorDetail('assigneeId', Message.assigneeIdExists));
 						return
 					}
 				})
@@ -235,7 +233,7 @@ export class OrderService {
 				const topicById = await this.topicService.getTopicById(topicId);
 	
 				if(!topicById.parent) {
-					errors.push(new ErrorDetail('topicId', Message.topic.topicIsRoot));
+					errors.push(new ErrorDetail('topicId', Message.topicIsRoot));
 				}
 
 				const codeTopic = topicById.code;
@@ -243,14 +241,14 @@ export class OrderService {
 				codeOrder = await this.generateCodeOrder(codeTopic);
 
 			} catch (error) {
-				errors.push(new ErrorDetail('topicId', 'message.topicNotFound'));
+				errors.push(new ErrorDetail('topicId', Message.topicNotFound));
 			} 
 		}
 
 		if (errors.length > 0 || !order) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				'message.updateOrderFailed',
+				Message.updateOrderFailed,
 				HttpErrorMessage.BAD_REQUEST,
 				errors,
 			);
@@ -318,9 +316,9 @@ export class OrderService {
 		if (!topic) {
 			throw new ErrorResDto(
 				HttpStatus.BAD_REQUEST,
-				Message.order.find.byTopicId.failed,
+				Message.getOrderByIdFailed,
 				HttpErrorMessage.BAD_REQUEST,
-				[new ErrorDetail('topicId', Message.order.find.byTopicId.failed)],
+				[new ErrorDetail('topicId', Message.orderNotFound)],
 			);
 		}
 
