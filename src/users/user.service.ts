@@ -47,6 +47,13 @@ export class UsersService {
 		});
 	}
 
+
+	async findAll(
+
+	){
+		
+	}
+
 	// async findAll(
 	//   currentPage: number,
 	//   pageSize: number,

@@ -24,6 +24,13 @@ export class UsersController {
 		);
 	}
 
+	@Get()
+	async findAll(
+		
+	){
+
+	}
+
 	// @Get()
 	// async findAll(
 	//     @Query() query: FindAllDto,
